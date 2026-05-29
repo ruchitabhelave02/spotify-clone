@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Spotify -Web Player:Music for everyone</title>
+
+  <!-- Google Font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <!-- TOP NAVBAR -->
+
+  <nav class="navbar">
+
+    <div class="nav-left">
+
+      <div class="logo">
+        <i class="fa-brands fa-spotify"></i>
+      </div>
+
+      <div class="home-icon">
+        <i class=" fa-solid fa-house"></i>
+      </div>
+
+      <div class="search-box">
+        <div class="search-icon">
+    <i class="fa-solid fa-magnifying-glass"></i>
+    </div>
+    <div class="input-area">
+        <input type="text" placeholder="What do you want to play?">
+       
+     <div class="shortcut">
+    <span>Ctrl</span>
+    <span>Shift</span>
+    <span>L</span>
+   </div> 
+   </div>
+    <div class="browse-icon">
+        <i class="fa-regular fa-folder-open"></i>
+    </div>
+
+      </div>
+     
+      
+    </div>
+
+
+    <div class="nav-right">
+      <a href="#">Premium</a>
+      <a href="#">Support</a>
+      <a href="#">Download</a>
+
+      <div class="line"></div>
+
+      <a href="#"><i class="fa-regular fa-circle-down"></i> Install App</a>
+
+      <button type="button" class="signup">Sign up</button>
+      <button type="button" class="login">Log in</button>
+    </div>
+
+  </nav>
+
+
+  <!-- MAIN SECTION -->
+
+  <div class="main-container">
+
+    <!-- SIDEBAR -->
+
+    <div class="sidebar">
+
+        <!--fixed header-->
+        <div class="sidebar-header">
+
+      <div class="library">
+        <h3>Your Library</h3>
+
+        <button type="button">
+          <i class="fa-solid fa-plus"></i>
+          Create
+        </button>
+      </div>
+</div>
+<!--scrollable content-->
+<div class="sidebar-scroll">
+      <div class="playlist-box">
+        <h4>Create your first playlist</h4>
+        <p>It's easy, we'll help you</p>
+
+        <button type="button">Create playlist</button>
+      </div>
+
+
+      <div class="playlist-box">
+        <h4>Let's find some podcasts to follow</h4>
+        <p>We'll keep you updated on new episodes</p>
+
+        <button type="button">Browse podcasts</button>
+      </div>
+</div>
+
+<div class="sidebar-footer">
+
+        <div class="footer-links">
+
+            <a href="#">Legal</a>
+            <a href="#">Safety & Privacy Center</a>
+            <a href="#">Privacy Policy</a>
+            <a href="#">Cookies</a>
+            <a href="#">About Ads</a>
+            <a href="#">Accessibility</a>
+
+             <a href="#" class="cookies-link">Cookies</a>
+
+        </div>
+        
+        <button type="button" class="language-btn">
+            <i class="fa-solid fa-globe"></i>
+            English
+        </button>
+
+    </div>
+    </div>
+    <!-- CONTENT -->
+
+    <div class="content">
+
+        <div class="section-title">
+        <h2>Trending songs</h2>
+        <span>Show all</span>
+      </div>
+
+
+      <div class="album-container">
+
+        <div class="album-card">
+            <div class="album-image">
+          <img src="spotifyimages/music1.jpg" alt="">
+          <button type="button" class="album-play-btn" aria-label="Play song" >
+              <i class="fa-solid fa-play"></i>  
+            </button>
+            </div>
+            <h3>Prem Ki Leela</h3>
+            <p>Shreya Ghoshal,Javed Ali,Suvarna Tiwari,Prasad S</p>
+        </div>
+
+        <div class="album-card">
+            <div class="album-image">
+          <img src="spotifyimages/music2.jpg" alt="">
+          <button type="button" class="album-play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            </div>
+            <h3>Safar</h3>
+              <p>Bayaan,Sherazam</p>
+        </div>
+
+        <div class="album-card">
+            <div class="album-image">
+          <img src="spotifyimages/music3.jpg" alt="">
+          <button type="button" class="album-play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            </div>
+             <h3>Barbaad(From "Saiyaara")</h3>
+              <p>The Rish,Jubin Nautiyal</p>
+        </div>
+
+        <div class="album-card">
+            <div class="album-image">
+          <img src="spotifyimages/music4.jpg" alt="">
+          <button type="button" class="album-play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            </div>
+            <h3>Tu hai kahan</h3>
+            <p>AUR</p>
+        </div>
+
+        <div class="album-card">
+            <div class="album-image">
+          <img src="spotifyimages/music5.jpg" alt="">
+          <button type="button" class="album-play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            </div>
+            <h3>Chand Mera Dil-Title Track</h3>
+            <p>Sachin-jigar,Faheem Abdullah,</p>
+        </div>
+
+      </div>
+
+      <!-- Popular Artists -->
+
+      <div class="section-title">
+        <h2>Popular artists</h2>
+        <span>Show all</span>
+      </div>
+
+
+      <div class="card-container">
+
+        <div class="artist-card">
+
+          <div class="image">
+            <img src="spotifyimages/Alka Yagnik.jpg" alt="">
+            <button type="button" class="play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+          </div>
+
+          <h3>Alka Yagnik</h3>
+          <p>Artist</p>
+
+        </div>
+
+
+
+        <div class="artist-card">
+
+          <div class="image">
+            <img src="spotifyimages/Arijitsingh.jpg" alt= "">
+            <button type="button" class="play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+          </div>
+
+          <h3>Arijit Singh</h3>
+          <p>Artist</p>
+
+        </div>
+
+        <div class="artist-card">
+
+          <div class="image">
+            <img src="spotifyimages/Udit Narayan.jpg" alt= "">
+            <button type="button" class="play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+          </div>
+
+          <h3>Udit Narayan</h3>
+          <p>Artist</p>
+
+        </div>
+
+
+
+        <div class="artist-card">
+
+          <div class="image">
+            <img src="spotifyimages/Pritam.jpg" alt="">
+            <button type="button" class="play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+          </div>
+
+          <h3>Pritam</h3>
+          <p>Artist</p>
+
+        </div>
+
+
+
+        <div class="artist-card">
+
+          <div class="image">
+            <img src="spotifyimages/Shreya Goshal.jpg" alt="">
+            <button type="button" class="play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+          </div>
+
+          <h3>Shreya Ghoshal</h3>
+          <p>Artist</p>
+
+        </div>
+
+      </div>
+
+
+
+      <!-- Albums -->
+
+      <div class="section-title">
+        <h2>Popular albums and singles</h2>
+        <span>Show all</span>
+      </div>
+
+
+      <div class="album-container">
+
+        <div class="album-card">
+            <div class="album-image">
+          <img src="spotifyimages/popular1.jpg" alt="">
+          <button type="button" class="album-play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            </div>
+            <h3>Yeh Jawanni Hai deewani</h3>
+            <p>Pritam</p>
+        </div>
+
+        <div class="album-card">
+            <div class="album-image">
+          <img src="spotifyimages/popular2.jpg" alt="">
+          <button type="button" class="album-play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            </div>
+            <h3>Finding Her</h3>
+              <p>Kushagra,Bharath,saaheal</p>
+        </div>
+
+        <div class="album-card">
+            <div class="album-image">
+          <img src="spotifyimages/popular3.jpg" alt="">
+          <button type="button" class="album-play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            </div>
+             <h3>Aashiqui 2</h3>
+              <p>Mithun,Ankit Tiwari,jeet Ganguli</p>
+        </div>
+
+        <div class="album-card">
+            <div class="album-image">
+          <img src="spotifyimages/popular4.jpg" alt="">
+          <button type="button" class="album-play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            </div>
+            <h3>Raanjhan(From"Do Patti")</h3>
+            <p>Sachet-Parampara,Parampara Tandon,kaus..</p>
+        </div>
+
+        <div class="album-card">
+            <div class="album-image">
+          <img src="spotifyimages/popular5.jpg" alt="">
+          <button type="button" class="album-play-btn" aria-label="Play song">
+              <i class="fa-solid fa-play"></i>
+            </button>
+            </div>
+            <h3>Young G.O.A.T</h3>
+            <p>Cheema Y,Gur Sidhu</p>
+        </div>
+
+      </div>
+      <!-- CONTENT FOOTER -->
+
+<div class="content-footer">
+
+  <div class="footer-links-container">
+
+    <div class="footer-column">
+      <h3>Company</h3>
+      <a href="#">About</a>
+      <a href="#">Jobs</a>
+      <a href="#">For the Record</a>
+    </div>
+
+    <div class="footer-column">
+      <h3>Communities</h3>
+      <a href="#">For Artists</a>
+      <a href="#">Developers</a>
+      <a href="#">Advertising</a>
+      <a href="#">Investors</a>
+      <a href="#">Vendors</a>
+    </div>
+
+    <div class="footer-column">
+      <h3>Useful links</h3>
+      <a href="#">Support</a>
+      <a href="#">Free Mobile App</a>
+      <a href="#">Popular by Country</a>
+      <a href="#">Import your music</a>
+    </div>
+
+    <div class="footer-column">
+      <h3>Spotify Plans</h3>
+      <a href="#">Premium Standard</a>
+      <a href="#">Premium Platinum</a>
+      <a href="#">Premium Student</a>
+      <a href="#">Spotify Free</a>
+    </div>
+
+    <div class="social-icons">
+
+    <div class="social-tooltip">
+        <i class="fa-brands fa-instagram"></i>
+        <span class="tooltip-text">Instagram</span>
+    </div>
+
+    <div class="social-tooltip">
+        <i class="fa-brands fa-twitter"></i>
+        <span class="tooltip-text">Twitter</span>
+    </div>
+
+    <div class="social-tooltip">
+        <i class="fa-brands fa-facebook-f"></i>
+        <span class="tooltip-text">Facebook</span>
+    </div>
+
+</div>
+  </div>
+
+  <hr>
+
+  <p class="copyright">© 2026 Spotify AB</p>
+
+</div>
+
+    </div>
+
+  </div>
+
+
+  <!-- FOOTER BAR -->
+
+  <div class="footer-bar">
+
+    <div>
+      <h4>Preview of Spotify</h4>
+      <p>Sign up to get unlimited songs and podcasts with occasional ads. No credit card needed.</p>
+    </div>
+
+    <button type="button">Sign up for free</button>
+
+  </div>
+
+
+<script>
+
+const sidebarScroll = document.querySelector(".sidebar-scroll");
+const sidebarHeader = document.querySelector(".sidebar-header");
+
+sidebarScroll.addEventListener("scroll", () => {
+
+    if(sidebarScroll.scrollTop > 0){
+        sidebarHeader.classList.add("active-shadow");
+    }
+    else{
+        sidebarHeader.classList.remove("active-shadow");
+    }
+
+});
+
+</script>
+
+<script>
+
+const tooltips = document.querySelectorAll(".social-tooltip");
+
+tooltips.forEach((item) => {
+
+    const tooltip = item.querySelector(".tooltip-text");
+
+    item.addEventListener("mousemove", (e) => {
+
+        tooltip.style.left = e.pageX + 15 + "px";
+        tooltip.style.top = e.pageY + 15 + "px";
+
+    });
+
+});
+
+</script>
+
+
+</body>
+</html>
