@@ -1,0 +1,1161 @@
+/* Mobile-only mini-player controls (hidden by default) */
+.mobile-icon-btn{
+    display:none;
+}
+.mobile-play-btn{
+    display:none;
+}
+.mobile-topbar{
+    display: none;
+}
+.mobile-progress-track{
+    display:none;
+}
+.mobile-fullscreen-player{
+    display: none;
+}
+.mobile-topbar-search{
+    display: none;
+}
+.mobile-search-page{
+    display: none;
+}
+
+/* Mobile */
+
+@media (max-width:768px){
+
+body{
+    padding:0;
+    overflow-y:hidden;
+}
+
+/* Hide desktop navbar entirely on mobile */
+.navbar{
+    display:none;
+}
+
+/* MOBILE TOP BAR */
+.mobile-topbar{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    padding:14px 16px 10px;
+    background:#000;
+    position:sticky;
+    top:0;
+    z-index:1000;
+    overflow-x:auto;
+    scrollbar-width:none;
+}
+.mobile-topbar::-webkit-scrollbar{ display:none; }
+
+.mobile-profile-btn{
+    width:32px;
+    height:32px;
+    min-width:32px;
+    border-radius:50%;
+    background:#2a2a2a;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    flex-shrink:0;
+    cursor:pointer;
+    overflow:hidden;
+}
+
+.mobile-profile-btn .profile-img{
+    width:100%;
+    height:100%;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+}
+.mobile-pills{
+    display:flex;
+    gap:8px;
+    flex-shrink:0;
+}
+
+.mobile-pill{
+    border:none;
+    outline:none;
+    padding:7px 14px;
+    border-radius:999px;
+    background:#232323;
+    color:white;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    white-space:nowrap;
+}
+.mobile-icon-btn{
+    display:flex !important;
+    align-items:center;
+    justify-content:center;
+    width:30px;
+    height:30px;
+    border:none;
+    background:transparent;
+    color:white;
+    font-size:18px;
+    cursor:pointer;
+}
+
+.mobile-icon-btn img{
+    width:20px;
+    height:20px;
+    filter:brightness(0) invert(1);
+    opacity:0.85;
+}
+
+.mobile-pill.active{
+    background:#1ed760;
+    color:#000;
+}
+.mobile-progress-track{
+    display:block;
+    position:absolute;
+    left:0;
+    right:0;
+    bottom:0;
+    height:2px;
+    background:transparent;
+    z-index:10;
+    pointer-events:none;
+}
+
+.mobile-progress-fill{
+    height:100%;
+    width:0%;
+    background:#ffffff;
+    transition:width 0.15s linear;
+}
+
+/* MAIN LAYOUT */
+.main-container{
+    gap:0;
+    height:calc(100% - 60px); /* leave room for bottom nav */
+}
+
+.sidebar,
+.tablet-sidebar{
+    display:none;
+}
+
+
+.content{
+    width:100%;
+    padding:12px 0 100px 12px; /* extra bottom padding for floating player */
+    border-radius:0;
+    overflow-y:auto;
+    -ms-overflow-style:none;
+}
+.content::-webkit-scrollbar{ display:none; }
+/* QUICK PICKS - mobile sizing */
+.quick-header{
+    display:none; /* the pill nav here is redundant with mobile-topbar's pills */
+}
+
+.quick-section{
+    margin-left:0;
+    padding:12px 12px 20px;
+    background: #121212 !important; /* fixed background, no gradient shifting */
+}
+
+.quick-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    padding:0;
+}
+
+.quick-card{
+    height:44px;
+    
+}
+
+.quick-card img{
+    width:44px;
+    height:44px;
+}
+
+.quick-card span{
+    font-size:13px;
+    padding:0 10px;
+}
+
+.quick-play{
+    display:none;
+}
+
+.quick-eq{
+    width:12px;
+    height:12px;
+    right:14px;
+}
+
+/* SECTION TITLES */
+.section-title{
+    margin-bottom:14px;
+    padding-right:12px;
+}
+.section-title h2{
+    font-size:20px;
+    font-weight:700;
+}
+.section-title span{
+    display:none;
+}
+
+/* ALBUM ROWS: peek layout (~2.4 cards visible) */
+.album-container{
+    gap:14px;
+    overflow-x:auto;
+    padding-bottom:8px;
+    padding-right:12px;
+    scroll-snap-type:x mandatory;
+}
+
+.album-card{
+    width:34vw;
+    max-width:130px;
+    min-width:105px;
+    flex-shrink:0;
+    padding:0;
+    scroll-snap-align:start;
+}
+.album-card img{
+    width:100%;
+    aspect-ratio:1/1;
+    object-fit:cover;
+    border-radius:6px;
+}
+
+.album-card h3{
+    font-size:13px;
+    margin-top:8px;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+.album-card p{
+    font-size:11px;
+    line-height:1.4;
+    display:-webkit-box;
+    -webkit-line-clamp:1;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+
+.album-play-btn{
+   display:none;
+}
+
+/* FLOATING MINI PLAYER */
+.player{
+    position:fixed;
+    bottom:60px;
+    left:6px;
+    right:4px;
+    width:auto;
+    min-height:56px;
+    padding:6px 10px;
+    border-radius:8px;
+    background:linear-gradient(135deg,#7b3f61,#4a3b6b);
+    flex-wrap:nowrap;
+    box-shadow:0 6px 16px rgba(0,0,0,0.5);
+    z-index:9998;
+    overflow:hidden;
+}
+.mobile-fullscreen-player{
+    display:flex;
+    position:fixed;
+    inset:0;
+    background:linear-gradient(180deg, #2b5876 0%, #1a1a1a 55%, #121212 100%);
+    z-index:999999;
+    flex-direction:column;
+    padding:20px 20px 30px;
+    transform:translateY(100%);
+    transition:transform 0.4s ease;
+    color:white;
+    overflow-y:auto;
+    -ms-overflow-style:none;
+}
+
+.mobile-fullscreen-player::-webkit-scrollbar{
+    display:none;
+}
+
+.mobile-fullscreen-player.open{
+    transform:translateY(0);
+}
+
+.fs-header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:18px;
+    flex-shrink:0;
+}
+
+.fs-collapse-btn,
+.fs-menu-btn{
+    background:transparent;
+    border:none;
+    color:white;
+    font-size:20px;
+    width:32px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+.fs-playing-from{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    text-align:center;
+}
+
+.fs-playing-from-label{
+    font-size:11px;
+    font-weight:600;
+    letter-spacing:0.5px;
+    color:#e6e6e6;
+    text-transform:uppercase;
+}
+
+.fs-playing-from-title{
+    font-size:13px;
+    font-weight:700;
+    margin-top:2px;
+}
+
+.fs-cover-wrap{
+    width: clamp(180px, min(85vw, 50vh), 440px);
+    height: clamp(180px, min(85vw, 50vh), 440px);
+    aspect-ratio: 1 / 1;
+    margin: 0 auto 24px;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    flex-shrink: 0;
+    contain: layout size;
+}
+.fs-cover{
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+    background: rgba(0,0,0,0.15);
+}
+
+
+.fs-track-info{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:16px;
+}
+
+.fs-track-text{
+    min-width:0;
+}
+
+.fs-track-title{
+    font-size:22px;
+    font-weight:700;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.fs-track-artist{
+    font-size:15px;
+    color:#d0d0d0;
+    margin-top:4px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.fs-like-btn{
+    background:transparent;
+    border:none;
+    color:white;
+    font-size:24px;
+    flex-shrink:0;
+    cursor:pointer;
+}
+
+.fs-progress{
+    margin-bottom:14px;
+}
+
+.fs-progress-slider{
+    width:100%;
+    -webkit-appearance:none;
+    appearance:none;
+    height:4px;
+    border-radius:2px;
+    background:rgba(255,255,255,0.35);
+    outline:none;
+}
+
+.fs-progress-slider::-webkit-slider-thumb{
+    -webkit-appearance:none;
+    appearance:none;
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:white;
+}
+
+.fs-time-row{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    color:#d0d0d0;
+    margin-top:6px;
+}
+
+.fs-controls{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:10px 0 20px;
+    flex-shrink:0;
+}
+
+.fs-ctrl-btn{
+    background:transparent;
+    border:none;
+    color:white;
+    font-size:20px;
+    cursor:pointer;
+}
+
+.fs-ctrl-btn.active{
+    color:#1ed760;
+}
+
+.fs-play-btn{
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    background:white;
+    color:black;
+    border:none;
+    font-size:22px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+/* .fs-bottom-row{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.fs-bottom-btn{
+    background:transparent;
+    border:none;
+    color:#d0d0d0;
+    font-size:18px;
+    cursor:pointer;
+} */
+.player-left{
+    visibility:visible;
+    width:100%;
+    gap:10px;
+}
+
+.player-cover{
+    width:40px;
+    height:40px;
+}
+
+.player-track-title{
+    font-size:13px;
+}
+.player-track-artist{
+    font-size:11px;
+}
+
+.player-like-btn{
+    display:none;
+}
+
+.player-center{
+    display:none;
+}
+.player-right{
+    display:flex;
+    align-items:center;
+    flex:0 0 auto;
+    gap:1px;
+}
+
+.player-right .player-btn,
+#repeat-btn,
+.volume-container{
+    display:none;
+}
+
+.mobile-player-btn{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border:none;
+    outline:none;
+    background:transparent;
+    color:#e6e6e6;
+    cursor:pointer;
+}
+
+.mobile-player-btn img{
+    width:20px;
+    height:20px;
+    filter:brightness(0) invert(1);
+    opacity:0.85;
+}
+
+#mobile-device-btn,
+#mobile-like-btn{
+    width:30px;
+    height:30px;
+    font-size:18px;
+}
+
+#mobile-play-btn{
+    width:34px;
+    height:34px;
+    border-radius:50%;
+    background: transparent;
+    font-size:16px;
+}
+
+
+/* BOTTOM NAV */
+.mobile-nav{
+    position:fixed;
+    bottom:0;
+    left:0;
+    width:100%;
+    height:60px;
+    background: linear-gradient(to top, rgba(0,0,0,0.9), rgba(0,0,0,0));
+    display:flex;
+    justify-content:space-around;
+    align-items:center;
+    z-index:99999;
+    border-top:1px solid #1a1a1a;
+}
+
+.mobile-nav a{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:4px;
+    color:#b3b3b3;
+    text-decoration:none;
+    font-size:10.5px;
+}
+
+.mobile-nav a.active{
+    color:white;
+}
+
+.mobile-nav i{
+    font-size:20px;
+}
+.mobile-play-btn{
+    display:flex !important;
+    align-items:center;
+    justify-content:center;
+    width:36px;
+    height:36px;
+    border:none;
+    border-radius:50%;
+    background:transparent;
+    color:white;
+    font-size:16px;
+    cursor:pointer;
+}
+/* CONTENT FOOTER - mobile */
+.content-footer{
+    padding-top:24px;
+    margin-top:32px;
+    padding-left:12px;
+    padding-right:12px;
+}
+
+.footer-links-container{
+    display:grid;
+    grid-template-columns:repeat(auto-fit, minmax(140px, 1fr));
+    gap:24px 16px;
+    margin-left:0;
+    margin-right:0;
+    margin-top:12px;
+    margin-bottom:12px;
+}
+
+.footer-column{
+    width:100%;
+    gap:4px;
+}
+
+.footer-column h3{
+    font-size:14px;
+    margin-bottom:2px;
+}
+
+.footer-column a{
+    font-size:13.5px;
+    width:100%;
+    display:block;
+    box-sizing:border-box;
+}
+
+.social-icons{
+    justify-content:flex-start;
+    gap:12px;
+    margin-top:4px;
+}
+
+.social-icons div{
+    width:38px;
+    height:38px;
+}
+
+.footer-bottom{
+    flex-direction:column;
+    align-items:flex-start;
+    gap:14px;
+    padding:16px 0 90px; /* extra bottom padding so it's not hidden behind bottom nav / mini player */
+}
+
+.footer-bottom-links{
+    gap:14px 18px;
+    font-size:13px;
+}
+
+.footer-copy{
+    font-size:13px;
+    margin-right:0;
+}
+
+.mobile-topbar-library{
+    display:flex;
+    flex-direction:column;
+    align-items:stretch;
+    padding:14px 16px 12px;
+    background:#121212;
+    box-shadow:0 8px 15px rgba(0,0,0,0.6);
+    position:sticky;
+    top:0;
+    z-index:1000;
+}
+
+.mobile-lib-header-row{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    width:100%;
+}
+
+.mobile-lib-avatar{
+    position:relative;
+    background:#e8833a; /* fallback orange like avatar in reference */
+}
+
+.mobile-library-heading{
+    font-size:20px;
+    font-weight:700;
+    color:white;
+    margin:0;
+    flex:1;
+}
+
+.mobile-lib-header-icons{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    flex-shrink:0;
+}
+
+.mobile-lib-icon-btn{
+    background:transparent;
+    border:none;
+    color:white;
+    font-size:20px;
+    width:28px;
+    height:28px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+/* MOBILE LIBRARY PAGE */
+.mobile-library-page{
+    padding:4px 12px 20px;
+}
+
+.mobile-lib-pills{
+    display:flex;
+    gap:8px;
+    margin-top:14px;
+    padding:0 16px 14px;
+}
+
+.mobile-lib-pill{
+    background:#232323;
+    border:1px solid #232323;
+    color:white;
+    padding:6px 16px;
+    border-radius:999px;
+    font-size:13.5px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.mobile-lib-pill.active{
+    background:#232323;
+    border-color:#232323;
+    color:white;
+}
+
+
+.mobile-lib-list{
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+}
+
+/* Reuse desktop .lib-item styling, just resize for mobile touch targets */
+.mobile-lib-list .lib-item{
+    padding:8px 4px;
+}
+
+.mobile-lib-list .lib-item-img,
+.mobile-lib-list .lib-item-folder-icon,
+.mobile-lib-list .lib-item-liked-icon{
+    width:56px;
+    height:56px;
+}
+
+.mobile-lib-list .lib-item-title{
+    font-size:15.5px;
+}
+
+.mobile-lib-list .lib-item-meta{
+    font-size:13.5px;
+}
+
+/* On mobile, the play button should always be tappable, not hover-only */
+.mobile-lib-list .lib-card-play-btn{
+    opacity:1;
+    visibility:visible;
+    position:static;
+    transform:none;
+    margin-left:auto;
+    width:34px;
+    height:34px;
+    font-size:18px;
+}
+.lib-card-play-btn{
+    display: none;
+}
+
+.mobile-lib-list .lib-item{
+    position:relative;
+}
+/* SEARCH TOPBAR VARIANT */
+.mobile-topbar-search{
+    justify-content:space-between;
+}
+
+.mobile-search-heading{
+    font-size:20px;
+    font-weight:700;
+    color:white;
+    margin:0;
+    flex:1;
+}
+
+.mobile-search-camera-btn{
+    background:transparent;
+    border:none;
+    color:white;
+    font-size:20px;
+    width:32px;
+    height:32px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    cursor:pointer;
+}
+
+/* SEARCH BROWSE PAGE */
+.mobile-search-page{
+    padding:12px 16px 20px;
+}
+
+.mobile-search-box{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    background:white;
+    color:#000;
+    border-radius:8px;
+    padding:11px 14px;
+    font-size:14px;
+    font-weight:600;
+    cursor:pointer;
+    margin-bottom:20px;
+}
+
+.mobile-search-box i{
+    font-size:16px;
+}
+
+.mobile-search-box span{
+    color:#535353;
+    font-weight:500;
+}
+
+.mobile-search-section-title{
+    font-size:17px;
+    font-weight:700;
+    color:white;
+    margin:0 0 14px;
+}
+
+.mobile-browse-grid{
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:10px;
+}
+
+.browse-card{
+    position:relative;
+    height:88px;
+    border-radius:8px;
+    overflow:hidden;
+    padding:10px;
+    display:flex;
+    align-items:flex-start;
+}
+
+.browse-card span{
+    color:white;
+    font-size:14px;
+    font-weight:700;
+    z-index:1;
+}
+
+.browse-card::after{
+    content:"";
+    position:absolute;
+    right:-14px;
+    bottom:-14px;
+    width:60px;
+    height:60px;
+    background:rgba(255,255,255,0.15);
+    border-radius:8px;
+    transform:rotate(24deg);
+}
+
+.browse-card-music{ background:#e91e63; }
+.browse-card-podcasts{ background:#00695c; }
+.browse-card-live{ background:#8e24aa; }
+.browse-card-kpop{ background:#3949ab; }
+
+/* SEARCH INPUT OVERLAY */
+.mobile-search-input-page{
+    position:fixed;
+    inset:0;
+    background:#121212;
+    z-index:9990; /* below .player (9998) and .mobile-nav (99999) so both stay visible */
+    display:none;
+    flex-direction:column;
+    padding:14px 16px 170px; /* extra bottom room so results aren't hidden behind mini-player + nav */
+    overflow-y:auto;
+}
+
+.mobile-search-input-header{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    background:#2a2a2a;
+    border-radius:8px;
+    padding:10px 12px;
+    margin-bottom:20px;
+}
+
+.mobile-search-back-btn{
+    background:transparent;
+    border:none;
+    color:white;
+    font-size:18px;
+    flex-shrink:0;
+    cursor:pointer;
+}
+
+.mobile-search-input{
+    flex:1;
+    background:transparent;
+    border:none;
+    outline:none;
+    color:white;
+    font-size:15px;
+}
+
+.mobile-search-input::placeholder{
+    color:#b3b3b3;
+}
+
+.mobile-search-results{
+    display:flex;
+    flex-direction:column;
+    gap:2px;
+}
+
+.mobile-search-result-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:8px 0;
+    cursor:pointer;
+}
+
+.mobile-search-result-img{
+    width:48px;
+    height:48px;
+    border-radius:4px;
+    object-fit:cover;
+    flex-shrink:0;
+}
+
+.mobile-search-result-text{
+    flex:1;
+    min-width:0;
+}
+
+.mobile-search-result-title{
+    font-size:15px;
+    font-weight:500;
+    color:white;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.mobile-search-result-title.now-playing{
+    color:#1ed760;
+}
+
+.mobile-search-result-subtitle{
+    font-size:13px;
+    color:#b3b3b3;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.mobile-search-result-actions{
+    display:flex;
+    align-items:center;
+    gap:14px;
+    flex-shrink:0;
+    color:#b3b3b3;
+    font-size:18px;
+}
+
+.mobile-search-result-actions i{
+    cursor:pointer;
+}
+#desktop-fullscreen-player{
+        display:none !important;
+    }
+}
+
+
+/* Tablet */
+@media (min-width: 768px) and (max-width: 1100px) {
+  
+.sidebar{
+    display:none;
+}
+
+.tablet-sidebar{
+    display:flex;
+}
+.mobile-nav{
+    display: none;
+}
+
+/* Quick Picks: 2 columns x 4 rows, smaller cards */
+.quick-grid{
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+    padding:12px 16px 20px;
+}
+
+.quick-card{
+    height:52px;
+}
+
+.quick-card img{
+    width:52px;
+    height:52px;
+}
+
+.quick-card span{
+    font-size:13px;
+    padding:0 10px;
+}
+
+.quick-play{
+    width:36px;
+    height:36px;
+    font-size:13px;
+    margin-right:8px;
+}
+
+.quick-eq{
+    width:11px;
+    height:11px;
+    right:12px;
+}
+
+/* Album cards slightly smaller */
+.album-card{
+    width: clamp(7.5rem, 15vw, 10rem);
+    padding:10px;
+}
+
+
+}
+
+/* Desktop */
+@media (min-width: 1101px) {
+  
+  .sidebar {
+    display:flex;
+  }
+
+  .tablet-sidebar {
+    display: none;
+     width: 80px;      /* optional: slightly wider than tablet's 80px */
+    min-width: 80px;
+  }
+
+  .album-card {
+    width: clamp(8.75rem, 14vw, 12rem);
+  }
+  .mobile-nav{
+    display: none;
+  }
+}
+
+.desktop-fullscreen-player{
+    display:none;
+    position:fixed;
+    top:0;
+    left:0;
+    right:0;
+    z-index:100000;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(180deg, #2b5876 0%, #1a1a1a 60%, #121212 100%);
+    transition:background 0.6s ease;
+    cursor:default;
+}
+
+.desktop-fullscreen-player.open{
+    display:flex;
+}
+
+.dsk-fs-header{
+    position:absolute;
+    top:24px;
+    left:32px;
+    right:32px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    opacity:1;
+    transition:opacity 0.4s ease;
+}
+
+.desktop-fullscreen-player.idle .dsk-fs-header{
+    opacity:0;
+    pointer-events:none;
+}
+
+.dsk-fs-title{
+    color:#fff;
+    font-size:20px;
+    font-weight:700;
+}
+
+.dsk-fs-exit-btn{
+    background:transparent;
+    border:none;
+    color:#fff;
+    font-size:20px;
+    cursor:pointer;
+    width:36px;
+    height:36px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.dsk-fs-cover-wrap{
+    width:min(38vw, 45vh);
+    height:min(38vw, 45vh);
+    border-radius:8px;
+    overflow:hidden;
+    box-shadow:0 20px 60px rgba(0,0,0,0.6);
+}
+
+.dsk-fs-cover{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.dsk-fs-idle-info{
+    position:absolute;
+    left:32px;
+    bottom:32px;
+    opacity:0;
+    transition:opacity 0.4s ease;
+    pointer-events:none;
+}
+
+.desktop-fullscreen-player.idle .dsk-fs-idle-info{
+    opacity:1;
+}
+
+.dsk-fs-idle-title{
+    color:#fff;
+    font-size:22px;
+    font-weight:700;
+}
+
+.dsk-fs-idle-artist{
+    color:#d0d0d0;
+    font-size:15px;
+    margin-top:4px;
+}

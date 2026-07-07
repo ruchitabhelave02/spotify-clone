@@ -8,8 +8,9 @@
 body{
     background:black;
     color:white;
-    overflow:hidden;
-    height:100vh;
+    overflow-x:hidden;
+    overflow-y: hidden;
+    min-height: 100vh;
     padding: 8px;
     display: flex;
     flex-direction: column;
@@ -19,7 +20,7 @@ body{
 
 .navbar{
     width:100%;
-    height:62px;
+    min-height: 3.875rem;
     background:black;
     display:flex;
     justify-content:space-between;
@@ -30,21 +31,21 @@ body{
     position: relative;
     line-height:1;
     flex-shrink:0;
+    flex-wrap: nowrap;
 }
 
 .nav-left{
     display:flex;
     align-items:center;
     gap:15px;
-    width:100%;
     height: 100%;
-    max-width:800px;
+     flex: 1 1 auto;
+    min-width: 0;
     margin-bottom: 8px;
 }
-
 .logo{
-    width:48px;
-    height:48px;
+    width: 3rem;
+    height: 3rem;
     font-size:34px;
     cursor:pointer;
     position:relative;
@@ -53,12 +54,13 @@ body{
     align-items:center;
     overflow:visible;
     z-index:10000;
+    margin-left: -8px;
 }
 
 
 .home-icon{
-    width:48px;
-    height:48px;
+    width: 3rem;
+    height: 3rem;
     min-width: 48;
     border-radius:50%;
     background:#1f1f1f;
@@ -71,6 +73,8 @@ body{
      flex-shrink:0;
      overflow:visible;
      z-index:10000;
+     margin-left: 1px;
+    
 
 }
 
@@ -176,29 +180,18 @@ content:"Home";
 
 .search-icon::after{
     content:"Search";
-
     position:absolute;
-
     bottom:-50px;
     left:50%;
-
     transform:translateX(-50%);
-
     background:#2a2a2a;
     color:white;
-
     padding:6px 7px;
-
     border-radius:4px;
-
     font-size:14px;
-
     font-family:'Poppins',sans-serif;
-
     font-weight:500;
-
     white-space:nowrap;
-
     opacity:0;
     visibility:hidden;
 
@@ -227,6 +220,11 @@ content:"Home";
     opacity:0;
     visibility:hidden;
     transition:0.2s ease;
+}
+.search-box {
+    flex: 1;
+    min-width: 0;
+    max-width: 500px;
 }
 
 .shortcut span{
@@ -316,11 +314,8 @@ content:"Home";
     color:white;
     padding:6px 10px;
     border-radius:4px;
-
     font-size:14px;
-
     font-family:'Poppins',sans-serif;
-
     font-weight:500;
     white-space:nowrap;
     opacity:0;
@@ -342,7 +337,8 @@ content:"Home";
 .search-box{
    flex:1;
     width:100%;
-    max-width:500px;
+    min-width: 0;
+    max-width: min(32rem, 100%);
     background:#1f1f1f;
     padding:0 12px;
     border-radius:30px;
@@ -374,16 +370,14 @@ content:"Home";
     gap:12px;
     height: 100%;
     margin-bottom: 8px;
+    flex-wrap: nowrap;
+    flex-shrink: 0;
+    justify-content: flex-end;
+     margin-left: auto;
+      min-width: 0;
 
 }
 
-/* Push right section to end */
-.nav-right{
-    margin-left:auto;
-    display:flex;
-    align-items:center;
-    gap:12px;
-}
 /* What's New & Notification Buttons */
 .nav-icon-btn{
     width:32px;
@@ -397,7 +391,6 @@ content:"Home";
     display:flex;
     align-items:center;
     justify-content:center;
-
     transition:all 0.2s ease;
 }
 
@@ -415,32 +408,21 @@ content:"Home";
     position:absolute;
     bottom:-35px;
     left:50%;
-
     transform:translateX(-50%);
-
     background:#2a2a2a;
     color:white;
-
     padding:3px 7px;
-
     border-radius:4px;
-
     font-size:14px;
     font-family:'Poppins',sans-serif;
     font-weight:500;
-
     white-space:nowrap;
-
     opacity:0;
     visibility:hidden;
-
     transition:0.35s ease 0.5s,
         transform 0.35s ease 0.5s,
         visibility 0s linear 0.5s;
-
-
     pointer-events:none;
-
     z-index:99999;
 }
 
@@ -451,10 +433,10 @@ content:"Home";
 
 /* Profile Circle */
 .profile-btn{
-    width:52px;
-    height:52px;
+    width: 3.25rem;
+    height: 3.25rem;
     border-radius:50%;
-     background: #2a2a2a;
+    background: #2a2a2a;
     cursor:pointer;
     transition:transform 0.2s ease;
     position:relative;
@@ -498,7 +480,6 @@ content:"Home";
     transition: 0.35s ease 0.5s,
         transform 0.35s ease 0.5s,
         visibility 0s linear 0.5s;
-
     pointer-events: none;
     z-index: 99999;
 }
@@ -507,9 +488,6 @@ content:"Home";
     opacity: 1;
     visibility: visible;
 }
-
-
-
 /* MAIN */
 
 .main-container{
@@ -518,14 +496,15 @@ content:"Home";
     flex: 1;
     min-height: 0;
     overflow:visible;
- 
-}
-
-/* SIDEBAR */
+    flex-direction: row;
+    align-items: stretch;
+ }
+ /* SIDEBAR */
 
 .sidebar{
-    width:360px;
-    min-width:280px;
+    flex: 0 0 300px;
+    max-width: 360px;
+    min-width: 250px;
     background:#121212;
     border-radius:10px;
     display:flex;
@@ -577,6 +556,7 @@ content:"Home";
 .lib-title h3 {
     font-size: 15.8px;
     font-weight: 630;
+    margin-left: -6px;
 }
 
 .lib-header-buttons {
@@ -626,55 +606,13 @@ content:"Home";
 .lib-btn:hover {
     background: #1f1f1f;
 }
-.lib-btn::after{
-    content:"Expand Your Library";
-    position:absolute;
-    top:-38px;
-    left:30%;
-    transform:translateX(-50%);
-    background:#2a2a2a;
-    color:white;
-    padding:6px 10px;
-    border-radius:4px;
-    font-size:13px;
-    font-family:'Poppins',sans-serif;
-    font-weight:550;
-    white-space:nowrap;
-    opacity:0;
-    visibility:hidden;
-    transition:
-    opacity 0.2s ease 0.6s,
-    visibility 0s linear 0.6s;
-    pointer-events:none;
-    z-index:10002;
-}
+
 
 .lib-btn:hover::after{
     opacity:1;
     visibility:visible;
 }
 
-.lib-btn-plus::after{
-    content:"Create playlist,folder or jam";
-    position:absolute;
-    top:-3px;
-    right:0;
-    background:#2a2a2a;
-    color:white;
-    padding:6px 10px;
-    border-radius:4px;
-    font-size:12px;
-    font-family:'Poppins',sans-serif;
-    font-weight:500;
-    white-space:nowrap;
-    opacity:0;
-    visibility:hidden;
-    transition:
-    opacity 0.2s ease 0.6s,
-    visibility 0s linear 0.6s;
-    pointer-events:none;
-    z-index:10002;
-}
 
 .lib-btn-plus:hover::after{
     opacity:1;
@@ -756,6 +694,7 @@ content:"Home";
 }
 
 /* CUSTOM SPOTIFY SCROLLBAR */
+
 .sidebar-scroll::-webkit-scrollbar{
     width:0px;
     transition:0.3s;
@@ -768,6 +707,8 @@ content:"Home";
 .sidebar-scroll::-webkit-scrollbar-thumb{
     background:#5a5a5a;
 }
+
+/* SHOW SCROLLBAR WHEN HOVERING MIDDLE SECTION */
 
 .sidebar-scroll:hover::-webkit-scrollbar{
     width:12px;
@@ -909,14 +850,6 @@ content:"Home";
 
 /* CONTENT */
 
-.content{
-    flex:1;
-    background:#121212;
-    border-radius:10px;
-    padding:20px;
-    overflow:auto;
-}
-
 .section-title{
     display:flex;
     justify-content:space-between;
@@ -924,12 +857,12 @@ content:"Home";
 
 }
 .section-title h2{
-    font-size: 24px;
+    
     font-weight: 600;
     cursor:pointer;
 }
 .section-title span{
-
+    font-size: clamp(1.25rem, 2vw, 1.5rem);
     color:#b3b3b3;
     cursor:pointer;
     font-size: 14px;
@@ -946,13 +879,12 @@ content:"Home";
 
 .card-container{
     display:flex;
-    gap:2px;
+    gap:16px;
     margin-bottom:50px;
-    flex-wrap:nowrap;
+    flex-wrap:wrap;
      overflow-x:auto;
      overflow-y:hidden;
     padding-bottom:10px;
-
 }
 
 .card-container,
@@ -974,9 +906,9 @@ content:"Home";
 }
 
 .image img{
-    width:100%;
+    max-width: 100%;
+    height: auto;
     border-radius:50%;
-    height:100%;
     object-fit:cover;
     display:block;
 }
@@ -991,9 +923,6 @@ content:"Home";
     overflow-x:auto;
     overflow-y:hidden;
     padding-bottom:10px;
-
-        /* Hide scrollbar */
-        /* Firefox */
     -ms-overflow-style:none;   /* IE/Edge */
 }
 
@@ -1010,7 +939,7 @@ content:"Home";
 
 
 .album-card{
-    width:190px;
+    width: clamp(8.75rem, 18vw, 11.875rem);
     flex-shrink:0;
     border-radius:10px;
     transition: 0.3s;
@@ -1030,6 +959,7 @@ content:"Home";
 }
 .album-card img{
     width:100%;
+    aspect-ratio: 1/1;
     border-radius:10px;
     display:block;
 }
@@ -1054,10 +984,8 @@ content:"Home";
     color:black;
     font-size:18px;
     cursor:pointer;
-
     opacity:0;
     transform:translateY(10px);
-
     transition:
     opacity 0.3s ease,
     transform 0.3s ease;
@@ -1068,22 +996,7 @@ content:"Home";
     opacity:1;
     transform:translateY(0);
 }
-.artist-card h3{
-    font-size:15px;
-    font-weight:500;
-    color:white;
-    margin-top:12px;
-    transition:0.3s;
-}
 
-.artist-card h3:hover{
-    text-decoration:underline;
-}
-.artist-card p{
-    font-size:13px;
-    color:#b3b3b3;
-    margin-top:4px;
-}
 .album-card h3{
     font-size:15px;
     font-weight:500;
@@ -1107,34 +1020,42 @@ content:"Home";
     flex:1;
     background:#121212;
     border-radius:10px;
-    padding:20px 0 20px 20px;
+    padding:0px 0 20px 20px;
     overflow-y:auto;
     overflow-x:hidden;
     min-height:0;
+    overflow-y:auto;
+    position:relative;
+    overflow-anchor: none;
     
 }
 
 /* CONTENT SCROLLBAR - SAME AS SIDEBAR */
-
-.content::-webkit-scrollbar {
-    width: 0;
-    transition: 0.3s;
+.content::-webkit-scrollbar{
+    width:0;
 }
 
-.content::-webkit-scrollbar-track {
-    background: transparent;
+/* TRACK */
+
+.content::-webkit-scrollbar-track{
+    background:transparent;
 }
 
-.content::-webkit-scrollbar-thumb {
-    background: #5a5a5a;
+/* THUMB */
+
+.content::-webkit-scrollbar-thumb{
+    background:#5a5a5a;
+    
 }
 
-.content:hover::-webkit-scrollbar {
-    width: 12px;
+/* SHOW ON HOVER */
+
+.content:hover::-webkit-scrollbar{
+    width:12px;
 }
 
-.content:hover::-webkit-scrollbar-thumb:hover {
-    background: #888;
+.content::-webkit-scrollbar-thumb:hover{
+    background:#888;
 }
 
 /* FOOTER */
@@ -1157,6 +1078,8 @@ content:"Home";
     flex-wrap:wrap;
     margin-left: 10px;
     margin-top: 20px;
+    margin-right: 10px;
+    margin-bottom: 20px;
 }
 
 .footer-column{
@@ -1210,17 +1133,16 @@ content:"Home";
     border-top:1px solid #2a2a2a;
     padding-top:32px;
     margin-top:48px;
-    
 }
 
 .footer-bottom {
+    border-top:1px solid #2a2a2a;
     display: flex;
     justify-content: space-between;
     align-items: center;
     flex-wrap: wrap;
     gap: 20px;
-    padding: 20px 0;
-     border-top:1px solid #2a2a2a;
+    padding: 20px 4px;    
 }
 
 .footer-bottom-links {
@@ -1242,11 +1164,12 @@ content:"Home";
 .footer-copy {
     color: #b3b3b3;
     font-size: 14px;
-}
+     margin-right: 4px;
+     }
 
 .copyright{
     color: #727272;
-    font-size:14px;
+    font-size:14px;   
 }
 
 .social-tooltip{
@@ -1287,7 +1210,8 @@ content:"Home";
 
 .player {
   width: 100%;
-  height: 90px;
+  min-height: 5.625rem;
+  height: auto;
   background-color: #000;
   display: flex;
   justify-content: space-between;
@@ -1295,18 +1219,17 @@ content:"Home";
   z-index: 1000;
   flex-shrink: 0;
   padding: 0 16px;
+  flex-wrap: wrap;
 }
-
 /* LEFT COLUMN: Track Info */
 .player-left {
-  width: 30%;
   min-width: 180px;
   display: flex;
   align-items: center;
   gap: 14px;
   visibility: hidden;
+flex: 1;
 }
-
 .player-cover {
   width: 56px;
   height: 56px;
@@ -1315,14 +1238,12 @@ content:"Home";
   flex-shrink: 0;
   box-shadow: 0 4px 12px rgba(0,0,0,0.5);
 }
-
 .player-track-info {
   display: flex;
   flex-direction: column;
   justify-content: center;
   min-width: 0;
 }
-
 .player-track-title {
   font-size: 14px;
   font-weight: 500;
@@ -1332,11 +1253,9 @@ content:"Home";
   cursor: pointer;
   width: 100%;
 }
-
 .player-track-title:hover {
   text-decoration: underline;
 }
-
 .player-track-artist {
   font-size: 11px;
   color: #b3b3b3;
@@ -1346,12 +1265,10 @@ content:"Home";
   margin-top: 3px;
   width: 100%;
 }
-
 .player-track-artist:hover {
   color: white;
   text-decoration: underline;
 }
-
 .scroll-inner {
   display: inline-block;
   white-space: nowrap;
@@ -1360,7 +1277,6 @@ content:"Home";
   text-overflow: ellipsis;
   vertical-align: middle;
 }
-
 .scroll-inner.animating {
   max-width: none;
   overflow: visible;
@@ -1376,7 +1292,6 @@ content:"Home";
     transform: translate3d(calc(var(--container-width) - 100%), 0, 0);
   }
 }
-
 .player-like-btn {
   background: transparent;
   border: none;
@@ -1392,7 +1307,6 @@ content:"Home";
   border-radius: 50%;
   flex-shrink: 0;
 }
-
 .player-like-btn:hover {
   color: white;
   transform: scale(1.06);
@@ -1404,14 +1318,14 @@ content:"Home";
 
 /* CENTER COLUMN: Music Controls & Progress Bar */
 .player-center {
-  width: 40%;
-  max-width: 600px;
+   max-width: 37.5rem;
+   width: 100%;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 8px;
+  flex: 2;
 }
-
 .player-controls {
   display: flex;
   align-items: center;
@@ -1420,7 +1334,6 @@ content:"Home";
 .player-btn i {
     font-size: 20px;  /* Bootstrap icons */
 }
-
 .control-btn {
   background: transparent;
   border: none;
@@ -1433,22 +1346,18 @@ content:"Home";
   border-radius: 50%;
   transition: all 0.2s ease;
 }
-
 .control-btn img {
   height: 16px;
   opacity: 0.7;
   transition: opacity 0.2s ease;
 }
-
 .control-btn:hover img {
   opacity: 1;
 }
 
 .control-btn.active img {
   opacity: 1;
-  filter: drop-shadow(0 0 2px #1ed760);
 }
-
 .control-btn.play-btn {
    background:transparent;
     width:36px;
@@ -1462,9 +1371,6 @@ content:"Home";
     max-width:36px;
     min-width:36px;
 }
-
-
-
 .control-btn.play-btn img {
     width: 36px;
     height: 36px;
@@ -1472,11 +1378,9 @@ content:"Home";
     display: block;
     margin: 0;
 }
-
 .control-btn.play-btn:hover {
   transform: scale(1.06);
 }
-
 /* Timeline/Slider Wrapper */
 .player-timeline {
   width: 100%;
@@ -1484,7 +1388,6 @@ content:"Home";
   align-items: center;
   gap: 8px;
 }
-
 .slider-container {
   flex: 1;
   position: relative;
@@ -1492,7 +1395,6 @@ content:"Home";
   align-items: center;
   height: 20px;
 }
-
 /* Timeline slider styles */
 .timeline-slider {
   width: 100%;
@@ -1594,7 +1496,7 @@ content:"Home";
     white-space:nowrap;
     opacity:0;
     visibility:hidden;
-transition:
+    transition:
         opacity 0.35s ease 0.5s,
         transform 0.35s ease 0.5s,
         visibility 0s linear 0.5s;
@@ -1613,27 +1515,23 @@ transition:
 
 /* RIGHT COLUMN: Options & Volume */
 .player-right {
-  width: 30%;
   display: flex;
   align-items: center;
   justify-content: flex-end;
   gap: 8px;
+  flex: 1;
 }
 
 .player-btn {
-  background: transparent;
+    background: transparent;
     border: none;
-
     width: 32px;
     height: 32px;
-
     display: flex;
     align-items: center;
     justify-content: center;
-
     color: #b3b3b3;
     cursor: pointer;
-
     transition: all 0.2s ease;
 }
 .play-btn img{
@@ -1674,7 +1572,7 @@ transition:
 .volume-slider {
   -webkit-appearance: none;
   appearance: none;
-  width: 90px;
+  width: clamp(4rem, 8vw, 6rem);
   height: 4px;
   border-radius: 2px;
   background: #4d4d4d;
@@ -1743,15 +1641,12 @@ transition:
   visibility: visible;
   transform: translateX(-50%) translateY(0);
 }
-
-
 /* Hide main content initially */
 #main-content {
      display:none;
     height:100vh;
     flex-direction:column;
 }
-
 /* Full Screen Loader */
 #loader {
     position: fixed;
@@ -1765,24 +1660,21 @@ transition:
     gap: 1rem;
     transition: opacity 0.8s ease;
 }
-
 /* Main Text */
 .loader-text {
     color: white;
-    font-size: 2rem;
+    font-size: clamp(1.5rem, 4vw, 2rem);
     font-weight: 700;
     margin: 0;
     letter-spacing: 1px;
     text-align: center;
 }
-
 /* Spotify Logo */
 .loader-logo {
-    width: 100px;
-    height: 100px;
+     width: clamp(4rem, 10vw, 6.25rem);
+    height: clamp(4rem, 10vw, 6.25rem);
     animation: pulse 2s ease-in-out infinite;
 }
-
 /* Spinner */
 .loader-spinner {
     width: 40px;
@@ -1792,7 +1684,6 @@ transition:
     border-radius: 50%;
     animation: spin 1s linear infinite;
 }
-
 /* Loading Text */
 .loader-subtext {
     color: #b3b3b3;
@@ -1800,7 +1691,6 @@ transition:
     margin: 0;
     letter-spacing: 2px;
 }
-
 /* Spinner Animation */
 @keyframes spin {
     from {
@@ -1810,21 +1700,456 @@ transition:
         transform: rotate(360deg);
     }
 }
+.tablet-sidebar{
+    width:70px;
+    min-width:70px;
+    background:#121212;
+    display:none;
+    flex-direction:column;
+    gap:18px;
+    border-radius:12px;
+}
+.liked{
+    display:flex;
+    align-items:center;
+    justify-content:center;
 
-/* Logo Animation */
-@keyframes pulse {
-    0% {
-        transform: scale(1);
-        opacity: 0.9;
-    }
-    50% {
-        transform: scale(1.08);
-        opacity: 1;
-    }
-    100% {
-        transform: scale(1);
-        opacity: 0.9;
-    }
+    border-radius:4px;
+
+    background:linear-gradient(135deg,#6c1865,#6ea4b1);
+
+    color:white;
+}
+.tablet-logo{
+    
+font-size: 22px;
+    transform: rotate(0deg);
+}
+
+.tablet-add-btn{
+    width:40px;
+    height:40px;
+    border:none;
+    border-radius:50%;
+    background:#2a2a2a;
+    color:white;
+    font-size:22px;
+    cursor:pointer;
+}
+.tablet-playlists{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:16.2px;
+}
+/* Common size */
+.tablet-playlists img,
+.tablet-folder,
+.liked{
+    width:55px;
+    height:55px;
+    cursor:pointer;
+    transition:.2s;
+}
+/* Playlists */
+.tablet-playlist{
+    border-radius:4px;
+    object-fit:cover;
+}
+/* Artist */
+.tablet-artist{
+    border-radius:50%;
+    object-fit:cover;
+}
+/* Folder */
+.tablet-folder{
+    border-radius:4px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:#2a2a2a;
+    color:#b3b3b3;
+    font-size:20px;
+}
+.tablet-playlists img:hover,
+.tablet-folder:hover,
+.liked:hover{
+    transform:scale(1.06);
+}
+.quick-header{
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    margin-left:-20px;
+    padding:18px 20px 14px;
+    background: #181818;
+}
+.quick-section{
+     margin-left: -20px;
+    padding: 0 20px 30px;
+
+    background: linear-gradient(to bottom, #181818 0%, #181818 50%, #121212 100%);
+}
+.quick-picks-nav{
+    display:flex;
+    gap:12px;
+}
+.quick-picks-nav button{
+    border:none;
+    outline:none;
+
+    padding:8px 18px;
+
+    border-radius:999px;
+
+    background:rgba(255,255,255,0.10);
+
+    color:white;
+
+    font-size:14px;
+
+    font-weight:600;
+
+    cursor:pointer;
+
+    transition: background .8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.quick-picks-nav button.active{
+    background:white;
+    color:black;
+}
+.quick-picks-nav button:hover{
+    background: var(--quick-accent-1,#2a2a2a);
+}
+.quick-picks-nav button.active:hover{
+    background:white;
+    color:black;
+}
+.quick-grid{
+    display:grid;
+    grid-template-columns:repeat(4,1fr);
+    gap:14px;
+    padding:16px 20px 30px;
+}
+.quick-card{
+    position:relative;
+    display:flex;
+    align-items:center;
+    height:58px;
+    border-radius:8px;
+    background:rgba(255,255,255,0.06);
+    overflow:hidden;
+    cursor:pointer;
+    transition:background 0.3s ease;
+}
+.quick-card img{
+    width:58px;
+    height:58px;
+    object-fit:cover;
+    flex-shrink:0;
+    aspect-ratio: 1/1;
+}
+.quick-card span{
+    flex:1;
+    padding:0 14px;
+    color:#fff;
+    font-size:14px;
+    font-weight:600;
+    display:-webkit-box;
+    -webkit-line-clamp:2;
+    -webkit-box-orient:vertical;
+    overflow:hidden;
+}
+.quick-play{
+    width:48px;
+    height:48px;
+    border:none;
+    border-radius:50%;
+    background:#1ed760;
+    color:black;
+    font-size:16px;
+    margin-right:10px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    opacity:0;
+    transform:translateX(0px);
+    transition:all .25s ease;
+}
+.quick-card:hover{
+    background-color:rgba(255,255,255,0.16); 
+}
+
+.quick-card:hover .quick-play{
+    opacity:1;
+    transform:translateY(0);
+} 
+/* Now Playing indicator - animated bars (Spotify style) */
+.quick-eq{
+    display:none;
+    position:absolute;
+    right:16px;
+    top:50%;
+    transform:translateY(-50%);
+    width:14px;
+    height:14px;
+    z-index:5;
+    pointer-events:none;
+}
+
+.quick-eq rect{
+    fill:#1ed760;
+    animation:eqBounce 0.9s ease-in-out infinite;
+    transform-origin:bottom;
+}
+
+.quick-eq rect:nth-child(1){ animation-delay:0s; }
+.quick-eq rect:nth-child(2){ animation-delay:0.2s; }
+.quick-eq rect:nth-child(3){ animation-delay:0.4s; }
+.quick-eq rect:nth-child(4){ animation-delay:0.6s; }
+
+@keyframes eqBounce{
+    0%, 100%{ transform:scaleY(0.3); }
+    50%{ transform:scaleY(1); }
+}
+
+/* Show icon only when card is playing and cursor is NOT on it */
+.quick-card.playing-card .quick-eq{
+    display:block;
+}
+
+.quick-card.playing-card.hovering .quick-eq{
+    display:none;
+}
+
+/* Keep play button visible on hover even when playing */
+.quick-card.playing-card.hovering .quick-play{
+    opacity:1;
+    transform:translateX(0);
+}  
+/* Sidebar Tooltip */
+/* Sidebar Tooltip */
+.tablet-icon-wrap{
+    position:relative;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+.tablet-tooltip{
+    position:fixed;
+    background:#2a2a2a;
+    color:white;
+
+    padding:6px 10px;
+    border-radius:4px;
+
+    display:flex;
+    flex-direction:column;
+    gap:4px;
+
+    white-space:nowrap;
+
+    opacity:0;
+    visibility:hidden;
+
+    transition:
+        opacity 0.35s ease 0.3s,
+        transform 0.35s ease 0.3s,
+        visibility 0s linear 0.3s;
+
+    pointer-events:none;
+    z-index:99999;
+}
+
+.tablet-tooltip.visible{
+    opacity:1;
+    visibility:visible;
+    transition: 
+    opacity 0.35s ease 0.3s,
+        transform 0.35s ease 0.3s,
+        visibility 0s linear 0s;
+}
+
+.tablet-tooltip-title{
+    font-size:16.2px;
+    font-weight:500;
+    color:white;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.tablet-tooltip-meta{
+    font-size:15px;
+    font-weight:400;
+    color:#b3b3b3;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+}
+
+.tablet-tooltip-meta i{
+    font-size:14px;
+    color:#1ed760;
+    transform:rotate(45deg);
+}
+
+.tablet-header{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    padding: 14px 8px 8px 8px;
+    flex-shrink:0;
+    background:#121212;
+    z-index:1000;
+    position:sticky;
+    top:0;
+     border-radius:12px 12px 0 0;
+    transition:box-shadow 0.3s ease;
+}
+.tablet-scroll{
+    flex:1;
+    overflow-y:auto;
+    padding: 0 8px 8px 8px;
+    min-height:0;
+}
+
+.tablet-scroll::-webkit-scrollbar{
+    width:0px;
+    transition:0.3s;
+}
+
+.tablet-scroll::-webkit-scrollbar-track{
+    background:transparent;
+}
+
+.tablet-scroll::-webkit-scrollbar-thumb{
+    background:#5a5a5a;
+}
+
+.tablet-scroll:hover::-webkit-scrollbar{
+    width:12px;
+}
+
+.tablet-scroll:hover::-webkit-scrollbar-thumb:hover{
+    background:#888;
 }
 
 
+/* Library collapse icon (hidden until sidebar header is hovered) */
+.lib-collapse-icon{
+    position:relative;
+    width:32px;
+    height:32px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    color:white;
+    font-size:18px;
+    border-radius:50%;
+    cursor:pointer;
+
+    opacity:0;
+    transform:translateX(-14px);
+
+    transition:
+        opacity 0.25s ease,
+        transform 0.25s ease,
+        background 0.2s ease;
+}
+
+.lib-collapse-icon:hover{
+    background:transparent;
+}
+
+.sidebar-header:hover .lib-collapse-icon{
+    opacity:1;
+    transform:translateX(0);
+}
+
+/* Tooltip for the collapse icon */
+
+.lib-collapse-icon:hover::after{
+    opacity:1;
+    visibility:visible;
+}
+.icon-tooltip{
+    position:fixed;
+    background:#2a2a2a;
+    color:white;
+    padding:6px 10px;
+    border-radius:4px;
+    font-size:13px;
+    font-weight:550;
+    white-space:nowrap;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 0.2s ease, visibility 0s linear 0.2s;
+    pointer-events:none;
+    z-index:100000;
+}
+.lib-item-liked-icon{
+    width:54px;
+    height:54px;
+    border-radius:4px;
+    flex-shrink:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:20px;
+    color:white;
+    background:linear-gradient(135deg,#6c1865,#6ea4b1);
+}
+
+.icon-tooltip.visible{
+    opacity:1;
+    visibility:visible;
+    transition:opacity 0.2s ease;
+}
+
+/* Tablet rail icon tooltip: "Open your Library" */
+.tablet-logo{
+    position:relative;
+    cursor:pointer;
+}
+.side-tooltip{
+    position:fixed;
+    background:#2a2a2a;
+    color:white;
+    padding:6px 10px;
+    border-radius:4px;
+    font-size:13px;
+    font-weight:550;
+    white-space:nowrap;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 0.2s ease, visibility 0s linear 0.2s;
+    pointer-events:none;
+    z-index:100000;
+}
+.side-tooltip.visible{
+    opacity:1;
+    visibility:visible;
+    transition:opacity 0.2s ease;
+}
+
+
+/* Manual sidebar toggle (Your Library <-> icon rail) */
+.sidebar.manually-hidden{
+    display:none !important;
+}
+
+.tablet-sidebar.manually-shown{
+    display:flex !important;
+}

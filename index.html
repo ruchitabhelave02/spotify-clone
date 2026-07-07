@@ -17,6 +17,7 @@
   href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="responsive.css">
 <!-- Bootstarp icons-->
   <link rel="stylesheet"
 href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
@@ -91,37 +92,165 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     <!-- Profile -->
     <div class="profile-btn">
         <img src="./spotifyimages/profile.png" alt="Profile" class="profile-img">
+    </div>    
     </div>
-
-
-      
-    </div>
-
   </nav>
+<!-- MOBILE TOP BAR (avatar + filter pills) -->
+<div class="mobile-topbar" id="mobile-topbar-default">
+  <div class="mobile-profile-btn">
+    <img src="./spotifyimages/profile.png" alt="Profile" class="profile-img">
+  </div>
+  <div class="mobile-pills">
+    <button class="mobile-pill active">All</button>
+    <button class="mobile-pill">Music</button>
+    <button class="mobile-pill">Podcasts</button>
+  </div>
+</div>
 
+<!-- MOBILE TOP BAR - Your Library variant -->
+<div class="mobile-topbar mobile-topbar-library" id="mobile-topbar-library" style="display:none;">
+  <div class="mobile-lib-header-row">
+    <div class="mobile-profile-btn mobile-lib-avatar">
+      <img src="./spotifyimages/profile.png" alt="Profile" class="profile-img">
+  
+    </div>
+    <h2 class="mobile-library-heading">Your Library</h2>
 
-  <!-- MAIN SECTION -->
+    <div class="mobile-lib-header-icons">
+      <button class="mobile-lib-icon-btn"><i class="bi bi-search"></i></button>
+      <button class="mobile-lib-icon-btn"><i class="bi bi-plus-lg"></i></button>
+    </div>
+  </div>
+  <div class="mobile-lib-pills">
+    <button class="mobile-lib-pill active" data-filter="all">Playlists</button>
+    <button class="mobile-lib-pill active" data-filter="artists">Artists</button>
+  </div>
+</div>
+<!-- MOBILE TOP BAR - Search variant -->
+<div class="mobile-topbar mobile-topbar-search" id="mobile-topbar-search" style="display:none;">
+  <div class="mobile-profile-btn">
+    <img src="./spotifyimages/profile.png" alt="Profile" class="profile-img">
+  </div>
+  <h2 class="mobile-search-heading">Search</h2>
+  <button class="mobile-search-camera-btn"><i class="bi bi-camera"></i></button>
+</div>
+<!-- MAIN SECTION -->
   <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
 
   <div class="main-container">
 
     <!-- SIDEBAR -->
+<!-- Tablet Sidebar -->
+<aside class="tablet-sidebar" id="tablet-sidebar">
 
-    <div class="sidebar">
+  <div class="tablet-header" id="tablet-header">
+    <div class="tablet-logo" id="expand-sidebar-btn">
+      <i class="bi bi-book"></i>
+       <span class="side-tooltip">Open your Library</span>
+    </div>
+
+    <button class="tablet-add-btn">
+        <i class="bi bi-plus-lg"></i>
+         <span class="side-tooltip">Create playlist, folder or jam</span>
+    </button>
+  </div>
+
+<div class="tablet-scroll">
+    <div class="tablet-playlists">
+
+  <div class="tablet-icon-wrap">
+    <div class="tablet-item liked">
+      <i class="bi bi-heart-fill"></i>
+    </div>
+    <div class="tablet-tooltip">
+      <span class="tablet-tooltip-title">Liked Songs</span>
+      <span class="tablet-tooltip-meta"><i class="fa-solid fa-thumbtack"></i> Playlist • 42 songs</span>
+    </div>
+  </div>
+
+  <div class="tablet-icon-wrap">
+    <img src="spotifyimages/travellingSong.jpg" class="tablet-playlist" alt="">
+    <div class="tablet-tooltip">
+      <span class="tablet-tooltip-title">Travelling Songs</span>
+      <span class="tablet-tooltip-meta"><i class="fa-solid fa-thumbtack"></i> Playlist • Ruchi</span>
+    </div>
+  </div>
+
+  <div class="tablet-icon-wrap">
+    <img src="spotifyimages/arijitSingh.jpg" class="tablet-artist" alt="">
+    <div class="tablet-tooltip">
+      <span class="tablet-tooltip-title">Arijit Singh</span>
+      <span class="tablet-tooltip-meta">Artist</span>
+    </div>
+  </div>
+
+  <div class="tablet-icon-wrap">
+    <div class="lib-item-folder-icon tablet-folder">
+      <i class="fa-regular fa-folder"></i>
+    </div>
+    <div class="tablet-tooltip">
+      <span class="tablet-tooltip-title">New Folder</span>
+      <span class="tablet-tooltip-meta"> 0 playlists</span>
+    </div>
+  </div>
+
+  <div class="tablet-icon-wrap">
+    <img src="spotifyimages/trendingsongs.jpg" class="tablet-playlist" alt="">
+    <div class="tablet-tooltip">
+      <span class="tablet-tooltip-title">Trending Now</span>
+      <span class="tablet-tooltip-meta"><i class="fa-solid fa-thumbtack"></i> Playlist • New</span>
+    </div>
+  </div>
+
+  <div class="tablet-icon-wrap">
+    <img src="spotifyimages/oldsongs.jpg" class="tablet-playlist" alt="">
+    <div class="tablet-tooltip">
+      <span class="tablet-tooltip-title">Old is Gold</span>
+      <span class="tablet-tooltip-meta"><i class="fa-solid fa-thumbtack"></i> Playlist • 90s</span>
+    </div>
+  </div>
+
+  <div class="tablet-icon-wrap">
+    <img src="spotifyimages/Darshan raval.webp" class="tablet-artist" alt="">
+    <div class="tablet-tooltip">
+      <span class="tablet-tooltip-title">Darshan Raval</span>
+      <span class="tablet-tooltip-meta"> Artist</span>
+    </div>
+  </div>
+
+  <div class="tablet-icon-wrap">
+    <img src="spotifyimages/radio.jpg" class="tablet-playlist" alt="">
+    <div class="tablet-tooltip">
+      <span class="tablet-tooltip-title">Her Radio</span>
+      <span class="tablet-tooltip-meta"><i class="fa-solid fa-thumbtack"></i> Playlist • Made for Me</span>
+    </div>
+  </div>
+
+</div>
+    </div>
+
+
+</aside>
+    <div class="sidebar" id="full-sidebar">
         
         <!--fixed header-->
         <div class="sidebar-header">
           <div class="library">
             <div class="lib-title">
-    
+                <div class="lib-collapse-icon" id="collapse-sidebar-btn">
+    <i class="bi bi-list"></i>
+    <span class="icon-tooltip">Collapse Your Library</span>
+  </div>
               <h3>Your Library</h3>
             </div>
             <div class="lib-header-buttons">
               <button type="button" class="lib-btn-plus" aria-label="Create">
                 <i class="bi bi-plus"></i>
+                 <span class="icon-tooltip">Create playlist, folder or jam</span>
               </button>
               <button type="button" class="lib-btn" aria-label="Expand Your Library">
                 <i class="bi bi-arrows-angle-expand"></i>
+                <span class="icon-tooltip">Expand Your Library</span>
               </button>
             </div>
           </div>
@@ -147,6 +276,22 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     </div>
 </div>
           <div class="lib-list">
+<div class="lib-item playlist pinned liked-item">
+  <div class="lib-item-liked-icon">
+    <i class="bi bi-heart-fill"></i>
+  </div>
+  <button class="lib-card-play-btn" aria-label="Play">
+    <i class="fa-sharp-duotone fa-solid fa-play"></i>
+  </button>
+  <div class="lib-item-details">
+    <span class="lib-item-title">Liked Songs</span>
+    <div class="lib-item-meta">
+      <i class="fa-solid fa-thumbtack pin-icon"></i>
+      <span>Playlist • 42 songs</span>
+    </div>
+  </div>
+</div>
+
              <div class="lib-item playlist pinned">
               <img src="spotifyimages/travellingSong.jpg" alt="Vibe Setters" class="lib-item-img">
               <button class="lib-card-play-btn" aria-label="Play">
@@ -231,8 +376,6 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
                 </div>
               </div>
             </div>
-        
-        
 
             <div class="lib-item playlist pinned">
               <img src="spotifyimages/radio.jpg" alt="Her Radio" class="lib-item-img">
@@ -255,10 +398,165 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
     <!-- CONTENT -->
 
     <div class="content">
+<nav class="mobile-nav">
+  <a href="#" class="active"><i class="bi bi-house-fill"></i><span>Home</span></a>
+  <a href="#"><i class="bi bi-search"></i><span>Search</span></a>
+  <a href="#"><i class="bi bi-collection"></i><span>Your Library</span></a>
+  <a href="#"><i class="fa-brands fa-spotify"></i><span>Premium</span></a>
+  <a href="#"><i class="bi bi-plus-lg"></i><span>Create</span></a>
+</nav>
+<!-- Sticky Header -->
 
+<div class="quick-header">
+
+    <div class="quick-picks-nav">
+        <button class="active">All</button>
+        <button>Music</button>
+        <button>Podcasts</button>
+    </div>
+
+</div>
+
+<!-- Quick Picks -->
+ <div class="quick-section">
+<div class="quick-grid">
+
+     <div class="quick-card" 
+     data-song="songs/LoveUZindagi.mp3"
+     data-title="Love You Zindagi"
+     data-artist="Amit Trivedi,Jasleen Royal,Kausar Munir"
+     data-cover="spotifyimages/quickCard2.jpg" data-color="#7b3f61">
+      <img src="spotifyimages/quickCard2.jpg">
+      <span>Love You Zindagi(From "Dear Zindagi")</span>
+      <button class="quick-play"><i class="fa-solid fa-play"></i></button>
+    </div>
+
+    <div class="quick-card" 
+    data-song="songs/Perfect.mp3"
+     data-title="Perfect"
+     data-artist="Ed Sheeran"
+     data-cover="spotifyimages/perfectSong.webp" data-color="#4a3b6b">
+      <img src="spotifyimages/perfectSong.webp">
+      <span>Perfect</span>
+      <button class="quick-play"><i class="fa-solid fa-play"></i></button>
+    </div>
+
+    <div class="quick-card"
+    data-song="songs/Chaar Kadam.mp3"
+     data-title="Chaar Kadam"
+     data-artist="Shaan,Shreya Goshal,Shantanu Moitara,Swanand Kirkire"
+     data-cover="spotifyimages/charKadam.webp" data-color="#1e5631">
+      <img src="spotifyimages/charKadam.webp">
+      <span>Chaar Kadam</span>
+      <button class="quick-play"><i class="fa-solid fa-play"></i></button>
+    </div>
+
+    <div class="quick-card" 
+    data-song="songs/Maskara.mp3"
+     data-title="Maskara(From-Main Vapas Aaunga)"
+     data-artist="A.R.Rahman,Vedang Raina,Nilanjana Josh,Irshad Kamil"
+     data-cover="spotifyimages/maskaraSong.webp" 
+    data-color="#8a3b52">
+      <img src="spotifyimages/maskaraSong.webp">
+      <span>Maskara(From "Main Vaapas AAunga")</span>
+      <button class="quick-play"><i class="fa-solid fa-play"></i></button>
+    </div>
+
+    <div class="quick-card"
+    data-song="songs/One Direction.mp3"
+     data-title="Night Changes"
+     data-artist="One Direction"
+     data-cover="spotifyimages/nightChanges.webp" 
+      data-color="#2c4b6e">
+      <img src="spotifyimages/nightChanges.webp">
+      <span>Night Changes</span>
+      <button class="quick-play"><i class="fa-solid fa-play"></i></button>
+    </div>
+
+    <div class="quick-card"
+    data-song="songs/Ek Din.mp3"
+     data-title="Ek Din Aap"
+     data-artist="Kumar Sanu,Alka Yagnik"
+     data-cover="spotifyimages/recentn3.jpg" 
+    data-color="#6e2c3e">
+      <img src="spotifyimages/recentn3.jpg">
+      <span>Eh Din Aap</span>
+      <button class="quick-play"><i class="fa-solid fa-play"></i></button>
+    </div>
+
+    <div class="quick-card"
+    data-song="songs/Preet Re.mp3"
+     data-title="Preet Re-From Dhadak 2"
+     data-artist="Darshan Raval,Rochak Kolhi,Jonita Gandhi,Gurpreet Saini"
+     data-cover="spotifyimages/preetRe.webp" 
+      data-color="#5e2530">
+      <img src="spotifyimages/preetRe.webp">
+      <span>Preet Re-From"Dhadak 2"</span>
+      <button class="quick-play"><i class="fa-solid fa-play"></i></button>
+    </div>
+
+    <div class="quick-card" 
+    data-song="songs/Namo Namo.mp3"
+     data-title="Namo Namo"
+     data-artist="Amit Trivedi"
+     data-cover="spotifyimages/namoNamo.webp" 
+    data-color="#4b2a4d">
+      <img src="spotifyimages/namoNamo.webp">
+      <span>Namo Namo</span>
+      <button class="quick-play"><i class="fa-solid fa-play"></i></button>
+    </div>
+</div>
+
+</div>
+
+<!-- MOBILE "YOUR LIBRARY" PAGE -->
+<div class="mobile-library-page" id="mobile-library-page" style="display:none;">
+  
+
+  <div class="mobile-lib-list" id="mobile-lib-list">
+    <!-- populated by JS: cloned from the desktop sidebar's .lib-list -->
+  </div>
+</div>
+<!-- MOBILE SEARCH PAGE (browse view) -->
+<div class="mobile-search-page" id="mobile-search-page" style="display:none;">
+  <div class="mobile-search-box" id="mobile-search-box-trigger">
+    <i class="bi bi-search"></i>
+    <span>What do you want to listen to?</span>
+  </div>
+
+  <h3 class="mobile-search-section-title">Start browsing</h3>
+
+  <div class="mobile-browse-grid">
+    <div class="browse-card browse-card-music">
+      <span>Music</span>
+    </div>
+    <div class="browse-card browse-card-podcasts">
+      <span>Podcasts</span>
+    </div>
+    <div class="browse-card browse-card-live">
+      <span>Live Events</span>
+    </div>
+    <div class="browse-card browse-card-kpop">
+      <span>Home of K-Pop</span>
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE SEARCH INPUT OVERLAY (results view) -->
+<div class="mobile-search-input-page" id="mobile-search-input-page" style="display:none;">
+  <div class="mobile-search-input-header">
+    <button class="mobile-search-back-btn" id="mobile-search-back-btn"><i class="bi bi-arrow-left"></i></button>
+    <input type="text" id="mobile-search-input" class="mobile-search-input" placeholder="What do you want to listen to?">
+  </div>
+
+  <h3 class="mobile-search-section-title" id="mobile-search-results-heading">Recents</h3>
+
+  <div class="mobile-search-results" id="mobile-search-results">
+    <!-- populated by JS -->
+  </div>
+</div>
 
       <!-- Recently played -->
-
 
       <div class="section-title">
         <h2>Recently Played</h2>
@@ -683,8 +981,6 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 </div>
   </div>
 
-  <hr>
-
 <div class="footer-bottom">
     <div class="footer-bottom-links">
         <a href="#">Legal</a>
@@ -707,6 +1003,9 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
   </div>
 <footer class="player">
+<div class="mobile-progress-track" id="mobile-progress-track">
+    <div class="mobile-progress-fill" id="mobile-progress-fill"></div>
+  </div>
 
   <!-- Left details -->
   <div class="player-left">
@@ -762,6 +1061,7 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
 
   <!-- Right options -->
   <div class="player-right">
+
     <button class="player-btn" data-tooltip="Lyrics">
      <i class="fa-light fa-microphone-stand"></i>
     </button>
@@ -795,11 +1095,71 @@ href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.m
   </div>
 
 </footer>
+<div class="mobile-fullscreen-player" id="mobile-fullscreen-player">
+  <div class="fs-header">
+    <button class="fs-collapse-btn" id="fs-collapse-btn"><i class="bi bi-chevron-down"></i></button>
+    <div class="fs-playing-from">
+      <span class="fs-playing-from-label" id="fs-playing-from-label">PLAYING FROM ALBUM</span>
+      <span class="fs-playing-from-title" id="fs-playing-from-title">Title</span>
+    </div>
+    <button class="fs-menu-btn"><i class="bi bi-three-dots-vertical"></i></button>
+  </div>
+
+  <div class="fs-cover-wrap">
+    <img src="" alt="" id="fs-cover" class="fs-cover">
+  </div>
+
+  <div class="fs-track-info">
+    <div class="fs-track-text">
+      <div class="fs-track-title" id="fs-track-title">Title</div>
+      <div class="fs-track-artist" id="fs-track-artist">Artist</div>
+    </div>
+    <button class="fs-like-btn" id="fs-like-btn"><i class="bi bi-plus-circle"></i></button>
+  </div>
+
+  <div class="fs-progress">
+    <input type="range" id="fs-progress-slider" class="fs-progress-slider" min="0" max="100" step="1" value="0">
+    <div class="fs-time-row">
+      <span id="fs-current-time">0:00</span>
+      <span id="fs-total-time">0:00</span>
+    </div>
+  </div>
+
+  <div class="fs-controls">
+    <button class="fs-ctrl-btn" id="fs-shuffle-btn"><i class="bi bi-shuffle"></i></button>
+    <button class="fs-ctrl-btn" id="fs-prev-btn"><i class="fa-solid fa-backward-step"></i></button>
+    <button class="fs-play-btn" id="fs-play-btn"><i class="fa-solid fa-play"></i></button>
+    <button class="fs-ctrl-btn" id="fs-next-btn"><i class="fa-solid fa-forward-step"></i></button>
+    <button class="fs-ctrl-btn" id="fs-repeat-btn"><i class="bi bi-arrow-repeat"></i></button>
+  </div>
+
+  <!-- <div class="fs-bottom-row">
+    <button class="fs-bottom-btn"><i class="bi bi-tv"></i></button>
+    <button class="fs-bottom-btn"><i class="bi bi-share"></i></button>
+    <button class="fs-bottom-btn"><i class="bi bi-list-ul"></i></button>
+  </div> -->
+</div>
+
+<!-- DESKTOP FULLSCREEN PLAYER -->
+<div class="desktop-fullscreen-player" id="desktop-fullscreen-player">
+  <div class="dsk-fs-header" id="dsk-fs-header">
+    <span class="dsk-fs-title" id="dsk-fs-title">Song Title</span>
+    <button class="dsk-fs-exit-btn" id="dsk-fs-exit-btn" aria-label="Exit full screen">
+      <i class="bi bi-fullscreen-exit"></i>
+    </button>
+  </div>
+
+  <div class="dsk-fs-cover-wrap">
+    <img src="" alt="" id="dsk-fs-cover" class="dsk-fs-cover">
+  </div>
+
+
+</div>
 </div>
 
 <script>
 
-const sidebarScroll = document.querySelector(".sidebar-scroll");
+const sidebarScroll = document.querySelector("#full-sidebar .sidebar-scroll");
 const sidebarHeader = document.querySelector(".sidebar-header");
 
 sidebarScroll.addEventListener("scroll", () => {
@@ -809,8 +1169,18 @@ sidebarScroll.addEventListener("scroll", () => {
     }
     else{
         sidebarHeader.classList.remove("active-shadow");
-    }
+   }
+});
+const tabletScroll = document.querySelector(".tablet-scroll");
+const tabletHeader = document.querySelector(".tablet-header");
 
+tabletScroll.addEventListener("scroll", () => {
+    if(tabletScroll.scrollTop > 0){
+        tabletHeader.classList.add("active-shadow");
+    }
+    else{
+        tabletHeader.classList.remove("active-shadow");
+    }
 });
 
 </script>
