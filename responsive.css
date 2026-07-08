@@ -779,6 +779,9 @@ body{
 /* SEARCH TOPBAR VARIANT */
 .mobile-topbar-search{
     justify-content:space-between;
+    background:#121212;
+    box-shadow:0 8px 15px rgba(0,0,0,0.6);
+
 }
 
 .mobile-search-heading{
@@ -927,65 +930,7 @@ body{
     gap:2px;
 }
 
-.mobile-search-result-item{
-    display:flex;
-    align-items:center;
-    gap:12px;
-    padding:8px 0;
-    cursor:pointer;
 }
-
-.mobile-search-result-img{
-    width:48px;
-    height:48px;
-    border-radius:4px;
-    object-fit:cover;
-    flex-shrink:0;
-}
-
-.mobile-search-result-text{
-    flex:1;
-    min-width:0;
-}
-
-.mobile-search-result-title{
-    font-size:15px;
-    font-weight:500;
-    color:white;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.mobile-search-result-title.now-playing{
-    color:#1ed760;
-}
-
-.mobile-search-result-subtitle{
-    font-size:13px;
-    color:#b3b3b3;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-}
-
-.mobile-search-result-actions{
-    display:flex;
-    align-items:center;
-    gap:14px;
-    flex-shrink:0;
-    color:#b3b3b3;
-    font-size:18px;
-}
-
-.mobile-search-result-actions i{
-    cursor:pointer;
-}
-#desktop-fullscreen-player{
-        display:none !important;
-    }
-}
-
 
 /* Tablet */
 @media (min-width: 768px) and (max-width: 1100px) {
@@ -1065,97 +1010,4 @@ body{
   }
 }
 
-.desktop-fullscreen-player{
-    display:none;
-    position:fixed;
-    top:0;
-    left:0;
-    right:0;
-    z-index:100000;
-    flex-direction:column;
-    align-items:center;
-    justify-content:center;
-    background:linear-gradient(180deg, #2b5876 0%, #1a1a1a 60%, #121212 100%);
-    transition:background 0.6s ease;
-    cursor:default;
-}
 
-.desktop-fullscreen-player.open{
-    display:flex;
-}
-
-.dsk-fs-header{
-    position:absolute;
-    top:24px;
-    left:32px;
-    right:32px;
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    opacity:1;
-    transition:opacity 0.4s ease;
-}
-
-.desktop-fullscreen-player.idle .dsk-fs-header{
-    opacity:0;
-    pointer-events:none;
-}
-
-.dsk-fs-title{
-    color:#fff;
-    font-size:20px;
-    font-weight:700;
-}
-
-.dsk-fs-exit-btn{
-    background:transparent;
-    border:none;
-    color:#fff;
-    font-size:20px;
-    cursor:pointer;
-    width:36px;
-    height:36px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-}
-
-.dsk-fs-cover-wrap{
-    width:min(38vw, 45vh);
-    height:min(38vw, 45vh);
-    border-radius:8px;
-    overflow:hidden;
-    box-shadow:0 20px 60px rgba(0,0,0,0.6);
-}
-
-.dsk-fs-cover{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-    display:block;
-}
-
-.dsk-fs-idle-info{
-    position:absolute;
-    left:32px;
-    bottom:32px;
-    opacity:0;
-    transition:opacity 0.4s ease;
-    pointer-events:none;
-}
-
-.desktop-fullscreen-player.idle .dsk-fs-idle-info{
-    opacity:1;
-}
-
-.dsk-fs-idle-title{
-    color:#fff;
-    font-size:22px;
-    font-weight:700;
-}
-
-.dsk-fs-idle-artist{
-    color:#d0d0d0;
-    font-size:15px;
-    margin-top:4px;
-}

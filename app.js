@@ -57,7 +57,7 @@ setupMobileMiniPlayerButton();
 setupFullScreenPlayer(); 
 setupMobileLibraryView();
 setupMobileSearchView()
-setupDesktopFullscreenPlayer(); 
+setupDesktopSearchDropdown();
   // Parse all album cards dynamically from the DOM
   parseSongCards();
   // Restore the last played track (if any) instead of always defaulting to index 0
@@ -116,8 +116,8 @@ volumeSlider.addEventListener("mouseleave", () => {
   setupCardInteractions();
   setupQuickCardInteractions();
 
-  // Search filter
-  if (searchInput) searchInput.addEventListener("input", handleSearch);
+  // // Search filter
+  // if (searchInput) searchInput.addEventListener("input", handleSearch);
 
   // Active styles for library items/pills
   setupLibraryInteractions();
@@ -235,7 +235,113 @@ function populateMobileLibList() {
     mobileLibList.appendChild(item.cloneNode(true));
   });
 }
+function setupDesktopSearchDropdown() {
+  const searchBox = document.querySelector(".search-box");
+  const dropdown = document.getElementById("desktop-search-dropdown");
+  const resultsContainer = document.getElementById("desktop-search-results");
+  const resultsHeading = document.getElementById("desktop-search-results-heading");
+  const input = document.getElementById("search-input");
 
+  if (!searchBox || !dropdown || !input) return;
+
+  function render(query) {
+    renderSearchResultsInto(resultsContainer, resultsHeading, query, () => {
+      render(input.value.trim());
+    });
+  }
+
+  input.addEventListener("focus", () => {
+    if (isMobileView()) return;
+    dropdown.style.display = "block";
+    render(input.value.trim());
+  });
+
+  input.addEventListener("input", () => {
+    if (isMobileView()) return;
+    render(input.value.trim());
+  });
+
+  // Close dropdown when clicking anywhere outside the search box
+  document.addEventListener("click", (e) => {
+    if (!searchBox.contains(e.target)) {
+      dropdown.style.display = "none";
+    }
+  });
+}
+function renderSearchResultsInto(container, headingEl, query, onRerender) {
+  if (!container) return;
+  container.innerHTML = "";
+
+  let matches;
+
+  if (!query) {
+    if (headingEl) headingEl.innerText = "Recents";
+    const recentIds = getRecentSearches();
+    matches = recentIds.map(id => songDatabase.find(t => t.id === id)).filter(Boolean);
+  } else {
+    if (headingEl) headingEl.innerText = "Results";
+    const lowerQuery = query.toLowerCase();
+    matches = songDatabase.filter(track =>
+      track.title.toLowerCase().includes(lowerQuery) ||
+      track.artist.toLowerCase().includes(lowerQuery)
+    );
+  }
+
+  if (matches.length === 0 && !query) {
+    const empty = document.createElement("p");
+    empty.style.color = "#b3b3b3";
+    empty.style.fontSize = "14px";
+    empty.style.padding = "8px 0";
+    empty.innerText = "Songs you play will appear here.";
+    container.appendChild(empty);
+    return;
+  }
+
+  matches.forEach(track => {
+    const row = document.createElement("div");
+    row.className = "mobile-search-result-item";
+    row.setAttribute("data-track-id", track.id);
+
+    const isNowPlaying = track.id === currentTrackIndex;
+
+    row.innerHTML = `
+      <img src="${track.cover}" class="mobile-search-result-img" alt="">
+      <div class="mobile-search-result-text">
+        <div class="mobile-search-result-title ${isNowPlaying ? 'now-playing' : ''}">${track.title}</div>
+        <div class="mobile-search-result-subtitle">Song • ${track.artist}</div>
+      </div>
+      <div class="mobile-search-result-actions">
+        <i class="bi bi-plus-circle" data-action="add"></i>
+        <i class="bi bi-x-lg" data-action="remove"></i>
+      </div>
+    `;
+
+    row.addEventListener("click", (e) => {
+      const iconTarget = e.target.closest("i");
+      if (iconTarget) {
+          e.stopPropagation();
+        if (iconTarget.getAttribute("data-action") === "remove") {
+          removeFromRecentSearches(track.id);
+          onRerender();
+        }
+        return;
+      }
+
+      if (currentTrackIndex === track.id) {
+        if (!isPlaying) playTrack();
+      } else {
+        currentTrackIndex = track.id;
+        loadTrack(currentTrackIndex);
+        playTrack();
+      }
+      addToRecentSearches(track.id);
+      if (isMobileView()) openFullScreenPlayer();
+      onRerender();
+    });
+
+    container.appendChild(row);
+  });
+}
 function setupMobileLibraryView() {
   const navLinks = document.querySelectorAll(".mobile-nav a");
   const topbarDefault = document.getElementById("mobile-topbar-default");
@@ -297,6 +403,29 @@ function setupMobileLibraryView() {
     });
   });
 }
+
+function getRecentSearches() {
+  try {
+    return JSON.parse(localStorage.getItem("recentSearchIds")) || [];
+  } catch {
+    return [];
+  }
+}
+
+function addToRecentSearches(trackId) {
+  let recents = getRecentSearches();
+  recents = recents.filter(id => id !== trackId); // remove if already present
+  recents.unshift(trackId); // add to front
+  recents = recents.slice(0, 10); // cap at 10
+  localStorage.setItem("recentSearchIds", JSON.stringify(recents));
+}
+
+function removeFromRecentSearches(trackId) {
+  let recents = getRecentSearches();
+  recents = recents.filter(id => id !== trackId);
+  localStorage.setItem("recentSearchIds", JSON.stringify(recents));
+}
+
 function setupMobileSearchView() {
   const navLinks = document.querySelectorAll(".mobile-nav a");
   const topbarDefault = document.getElementById("mobile-topbar-default");
@@ -348,27 +477,12 @@ function setupMobileSearchView() {
     if (topbarSearch) topbarSearch.style.display = "flex";
     if (searchPage) searchPage.style.display = "block";
   }
-  function getRecentSearches() {
-  try {
-    return JSON.parse(localStorage.getItem("recentSearchIds")) || [];
-  } catch {
-    return [];
+
+  function renderSearchResults(query) {
+    renderSearchResultsInto(resultsContainer, resultsHeading, query, () => {
+      renderSearchResults(mobileSearchInput ? mobileSearchInput.value.trim() : "");
+    });
   }
-}
-
-function addToRecentSearches(trackId) {
-  let recents = getRecentSearches();
-  recents = recents.filter(id => id !== trackId); // remove if already present
-  recents.unshift(trackId); // add to front
-  recents = recents.slice(0, 10); // cap at 10
-  localStorage.setItem("recentSearchIds", JSON.stringify(recents));
-}
-
-function removeFromRecentSearches(trackId) {
-  let recents = getRecentSearches();
-  recents = recents.filter(id => id !== trackId);
-  localStorage.setItem("recentSearchIds", JSON.stringify(recents));
-}
 
   navLinks.forEach(link => {
     link.addEventListener("click", (e) => {
@@ -413,86 +527,8 @@ function removeFromRecentSearches(trackId) {
       renderSearchResults(e.target.value.trim());
     });
   }
-
-  function renderSearchResults(query) {
-    if (!resultsContainer) return;
-    resultsContainer.innerHTML = "";
-
-    let matches;
-
-    if (!query) {
-      // No query: show only actually-played recent songs (empty on first load)
-      if (resultsHeading) resultsHeading.innerText = "Recents";
-      const recentIds = getRecentSearches();
-      matches = recentIds
-        .map(id => songDatabase.find(t => t.id === id))
-        .filter(Boolean);
-    } else {
-      // Query typed: search full database
-      if (resultsHeading) resultsHeading.innerText = "Results";
-      const lowerQuery = query.toLowerCase();
-      matches = songDatabase.filter(track =>
-        track.title.toLowerCase().includes(lowerQuery) ||
-        track.artist.toLowerCase().includes(lowerQuery)
-      );
-    }
-
-    if (matches.length === 0 && !query) {
-      const empty = document.createElement("p");
-      empty.style.color = "#b3b3b3";
-      empty.style.fontSize = "14px";
-      empty.innerText = "Songs you play will appear here.";
-      resultsContainer.appendChild(empty);
-      return;
-    }
-
-    matches.forEach(track => {
-      const row = document.createElement("div");
-      row.className = "mobile-search-result-item";
-      row.setAttribute("data-track-id", track.id);
-
-      const isNowPlaying = track.id === currentTrackIndex;
-
-      row.innerHTML = `
-        <img src="${track.cover}" class="mobile-search-result-img" alt="">
-        <div class="mobile-search-result-text">
-          <div class="mobile-search-result-title ${isNowPlaying ? 'now-playing' : ''}">${track.title}</div>
-          <div class="mobile-search-result-subtitle">Song • ${track.artist}</div>
-        </div>
-        <div class="mobile-search-result-actions">
-          <i class="bi bi-plus-circle" data-action="add"></i>
-          <i class="bi bi-x-lg" data-action="remove"></i>
-        </div>
-      `;
-
-      row.addEventListener("click", (e) => {
-        const iconTarget = e.target.closest("i");
-        if (iconTarget) {
-          if (iconTarget.getAttribute("data-action") === "remove") {
-            removeFromRecentSearches(track.id);
-            renderSearchResults(mobileSearchInput ? mobileSearchInput.value.trim() : "");
-          }
-          return; // don't trigger play for either icon
-        }
-
-        if (currentTrackIndex === track.id) {
-          if (!isPlaying) playTrack();
-        } else {
-          currentTrackIndex = track.id;
-          loadTrack(currentTrackIndex);
-          playTrack();
-        }
-        addToRecentSearches(track.id);
-        openFullScreenPlayer();
-        renderSearchResults(mobileSearchInput ? mobileSearchInput.value.trim() : "");
-      });
-
-      resultsContainer.appendChild(row);
-    });
-  }
-
-
 }
+
 function applyMobilePlayerColors(color) {
   const playerEl = document.querySelector(".player");
   console.log("applyMobilePlayerColors called with:", color, "| isMobileView:", isMobileView());
@@ -514,84 +550,7 @@ function applyMobilePlayerColors(color) {
   }
 }
 
-// ---- Desktop Fullscreen Player ----
-let isDesktopFullscreenOpen = false;
-let dskFsIdleTimer = null;
 
-function setupDesktopFullscreenPlayer() {
-  const fullscreenBtn = document.querySelector('.player-right .player-btn[data-tooltip="Full screen"]');
-  const overlay = document.getElementById("desktop-fullscreen-player");
-  const exitBtn = document.getElementById("dsk-fs-exit-btn");
-  const playerFooter = document.querySelector(".player");
-
-  if (!fullscreenBtn || !overlay || !exitBtn) return;
-
-  function openDesktopFullscreen() {
-    isDesktopFullscreenOpen = true;
-    overlay.classList.add("open");
-    overlay.classList.remove("idle");
-
-    if (playerFooter) {
-      overlay.style.bottom = playerFooter.offsetHeight + "px";
-    }
-
-    updateDesktopFullscreenInfo();
-
-    clearTimeout(dskFsIdleTimer);
-    dskFsIdleTimer = setTimeout(() => overlay.classList.add("idle"), 2500);
-  }
-
-  function closeDesktopFullscreen() {
-    isDesktopFullscreenOpen = false;
-    overlay.classList.remove("open", "idle");
-    clearTimeout(dskFsIdleTimer);
-  }
-
-  fullscreenBtn.addEventListener("click", () => {
-    if (isMobileView()) return; // desktop/tablet only
-    openDesktopFullscreen();
-  });
-
-  exitBtn.addEventListener("click", closeDesktopFullscreen);
-
-  // Fade chrome out after inactivity, back in on mouse movement
-  overlay.addEventListener("mousemove", () => {
-    overlay.classList.remove("idle");
-    clearTimeout(dskFsIdleTimer);
-    dskFsIdleTimer = setTimeout(() => overlay.classList.add("idle"), 2500);
-  });
-}
-
-function updateDesktopFullscreenInfo() {
-  const track = songDatabase[currentTrackIndex];
-  if (!track) return;
-
-  const titleEl = document.getElementById("dsk-fs-title");
-  const coverEl = document.getElementById("dsk-fs-cover");
-  const idleTitleEl = document.getElementById("dsk-fs-idle-title");
-  const idleArtistEl = document.getElementById("dsk-fs-idle-artist");
-  const overlay = document.getElementById("desktop-fullscreen-player");
-
-  if (titleEl) titleEl.innerText = track.title;
-  if (coverEl) coverEl.src = track.cover;
-  if (idleTitleEl) idleTitleEl.innerText = track.title;
-  if (idleArtistEl) idleArtistEl.innerText = track.artist;
-
-  // Distinct background gradient per song, based on a hash of its title+artist
-  if (overlay) {
-    const hue = hashStringToHue(track.title + track.artist);
-    overlay.style.background =
-      `linear-gradient(180deg, hsl(${hue}, 45%, 28%) 0%, #1a1a1a 60%, #121212 100%)`;
-  }
-}
-
-function hashStringToHue(str) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    hash = str.charCodeAt(i) + ((hash << 5) - hash);
-  }
-  return Math.abs(hash) % 360;
-}
 // Track Loading & Playback Controls
 function loadTrack(index) {
   const track = songDatabase[index];
@@ -632,7 +591,7 @@ function loadTrack(index) {
 
   // Update scroll marquee state
   updateFooterScrollState();
-  updateDesktopFullscreenInfo();
+
 }
 
 function playTrack() {
@@ -1261,20 +1220,7 @@ function checkAndSetupScroll(element) {
   }
 }
 
-// Search Bar Filter
-function handleSearch(e) {
-  const searchTerm = e.target.value.toLowerCase().trim();
-  albumCards.forEach(card => {
-    const title = card.querySelector("h3") ? card.querySelector("h3").innerText.toLowerCase() : "";
-    const artist = card.querySelector("p") ? card.querySelector("p").innerText.toLowerCase() : "";
 
-    if (title.includes(searchTerm) || artist.includes(searchTerm)) {
-      card.style.display = "block";
-    } else {
-      card.style.display = "none";
-    }
-  });
-}
 
 // Sidebar Pills & Interactions
 function setupLibraryInteractions() {
@@ -1331,7 +1277,6 @@ function setupLibraryInteractions() {
       contentPanel.scrollTo({ top: 0, behavior: "smooth" });
       if (searchInput) {
         searchInput.value = "";
-        albumCards.forEach(c => c.style.display = "block");
       }
     });
   }
