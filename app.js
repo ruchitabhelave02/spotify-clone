@@ -58,6 +58,8 @@ setupFullScreenPlayer();
 setupMobileLibraryView();
 setupMobileSearchView()
 setupDesktopSearchDropdown();
+setupDesktopFullscreenPlayer();
+setupMiniPlayerPopup();
   // Parse all album cards dynamically from the DOM
   parseSongCards();
   // Restore the last played track (if any) instead of always defaulting to index 0
@@ -550,6 +552,169 @@ function applyMobilePlayerColors(color) {
   }
 }
 
+let isDesktopFullscreenOpen = false;
+let desktopFullscreenBtn;
+function setupDesktopFullscreenPlayer() {
+  desktopFullscreenBtn = document.querySelector('.player-right .player-btn[data-tooltip="Full screen"], .player-right .player-btn[data-tooltip="Exit full screen"]');
+  const overlay = document.getElementById("desktop-fullscreen-player");
+  const playerAnchor = document.getElementById("player-anchor");
+  const playerFooter = document.querySelector("footer.player");
+  const playerSlot = document.getElementById("dsk-fs-player-slot");
+  const windowToggleBtn = document.getElementById("dsk-fs-window-toggle");
+
+  if (!desktopFullscreenBtn || !overlay || !playerAnchor || !playerFooter || !playerSlot) return;
+
+  function hasActiveTrack() {
+    return songDatabase.length > 0 && !!songDatabase[currentTrackIndex];
+  }
+
+  function getFullscreenElement() {
+    return document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+  }
+
+
+  // --- 1. BOTTOM PLAYER BUTTON ACTION (IMAGE 1 <-> IMAGE 2 <-> HOME PAGE) ---
+  desktopFullscreenBtn.addEventListener("click", () => {
+    if (isMobileView()) return;
+    if (!hasActiveTrack()) return;
+
+    if (!overlay.classList.contains("open")) {
+      playerSlot.appendChild(playerFooter); 
+      overlay.classList.add("open");
+      overlay.style.display = "block";
+      updateDesktopFullscreenInfo();
+
+      const requestFS = overlay.requestFullscreen || overlay.webkitRequestFullscreen || overlay.msRequestFullscreen;
+      if (requestFS) {
+        requestFS.call(overlay).catch(err => console.warn("Fullscreen request failed:", err));
+      }
+    } 
+    else {
+      const isNativeFS = getFullscreenElement() === overlay;
+
+      if (!isNativeFS) {
+        const requestFS = overlay.requestFullscreen || overlay.webkitRequestFullscreen || overlay.msRequestFullscreen;
+        if (requestFS) {
+          requestFS.call(overlay).catch(err => console.warn("Fullscreen request failed:", err));
+        }
+      } else {
+        const exitFS = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+        if (exitFS) {
+          exitFS.call(document);
+        }
+        
+        overlay.classList.remove("open");
+        overlay.style.display = "none";
+        if (playerAnchor && playerFooter) {
+          playerAnchor.parentNode.insertBefore(playerFooter, playerAnchor.nextSibling);
+        }
+      }
+    }
+  });
+
+  // --- 2. TOP-RIGHT WINDOW TOGGLE ACTION (IMAGE 1 <-> IMAGE 2) ---
+  if (windowToggleBtn) {
+    windowToggleBtn.addEventListener("click", (e) => {
+      e.stopPropagation(); 
+      
+      if (getFullscreenElement() === overlay) {
+        const exitFS = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+        if (exitFS) exitFS.call(document);
+      } else {
+        const requestFS = overlay.requestFullscreen || overlay.webkitRequestFullscreen || overlay.msRequestFullscreen;
+        if (requestFS) {
+          requestFS.call(overlay).catch(err => console.warn("Fullscreen request failed:", err));
+        }
+      }
+    });
+  }
+
+  // --- 3. WATCHER (KEEPS ALL STATES, ICONS, AND TOOLTIPS IN PERFECT SYNC) ---
+  function onFullscreenChange() {
+    const isNativeFS = getFullscreenElement() === overlay;
+    const miniPlayerPopup = document.getElementById("mini-player-popup");
+    const miniPlayerOpen = miniPlayerPopup?.classList.contains("open");
+
+    if (isNativeFS) {
+      isDesktopFullscreenOpen = true;
+      if (windowToggleBtn) {
+        windowToggleBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+        windowToggleBtn.setAttribute("data-tooltip", "Exit full screen");
+      }
+      if (desktopFullscreenBtn) {
+        desktopFullscreenBtn.innerHTML = '<i class="fa-solid fa-compress"></i>';
+        desktopFullscreenBtn.setAttribute("data-tooltip", "Exit full screen");
+      }
+
+      // OPTION A: if miniplayer was already open before/while entering true fullscreen,
+      // move it inside the fullscreen element so the browser actually paints it.
+      if (miniPlayerOpen && miniPlayerPopup && miniPlayerPopup.parentNode !== overlay) {
+        overlay.appendChild(miniPlayerPopup);
+      }
+    } else {
+      isDesktopFullscreenOpen = false;
+
+      if (!miniPlayerOpen && !overlay.classList.contains("open")) {
+         overlay.classList.remove("open");
+         overlay.style.display = "none";
+         if (playerAnchor && playerFooter) {
+           playerAnchor.parentNode.insertBefore(playerFooter, playerAnchor.nextSibling);
+         }
+      }
+
+      if (windowToggleBtn) {
+        windowToggleBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+        windowToggleBtn.setAttribute("data-tooltip", "Enter full screen");
+      }
+      if (desktopFullscreenBtn) {
+        desktopFullscreenBtn.innerHTML = '<i class="fa-solid fa-expand"></i>';
+        desktopFullscreenBtn.setAttribute("data-tooltip", "Full screen");
+      }
+
+      // Restore miniplayer to its normal spot once we leave true fullscreen
+      if (miniPlayerPopup && miniPlayerPopup.parentNode === overlay) {
+        if (miniPlayerHomeParent) {
+          miniPlayerHomeParent.insertBefore(miniPlayerPopup, miniPlayerHomeNextSibling);
+        } else {
+          document.body.appendChild(miniPlayerPopup);
+        }
+      }
+    }
+  }
+  document.addEventListener("fullscreenchange", onFullscreenChange);
+  document.addEventListener("webkitfullscreenchange", onFullscreenChange);
+  document.addEventListener("MSFullscreenChange", onFullscreenChange);
+}
+
+
+function updateDesktopFullscreenInfo() {
+  const track = songDatabase[currentTrackIndex];
+  if (!track) return;
+
+  const headerTitleEl = document.getElementById("dsk-fs-header-title");
+  const coverEl = document.getElementById("dsk-fs-cover");
+  const trackTitleEl = document.getElementById("dsk-fs-track-title");
+  const trackArtistEl = document.getElementById("dsk-fs-track-artist");
+  const overlay = document.getElementById("desktop-fullscreen-player");
+
+  if (headerTitleEl) headerTitleEl.innerText = track.title;
+  if (coverEl) coverEl.src = track.cover;
+  if (trackTitleEl) trackTitleEl.innerText = track.title;
+  if (trackArtistEl) trackArtistEl.innerText = track.artist;
+
+  if (overlay && track.color) {
+    overlay.style.backgroundColor = track.color;
+    overlay.style.backgroundImage = "none"; // Clears out any default gradients
+  }
+}
+
+function hashStringToHue(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = str.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return Math.abs(hash) % 360;
+}
 
 // Track Loading & Playback Controls
 function loadTrack(index) {
@@ -557,6 +722,9 @@ function loadTrack(index) {
   if (!track) return;
   localStorage.setItem("lastTrackIndex", index);
   audioPlayer.src = track.audioUrl;
+  
+const playerLeft = document.querySelector(".player-left");
+  if (playerLeft) playerLeft.style.visibility = "visible";
   
   // Update Playbar UI
   if (trackTitle) {
@@ -586,11 +754,19 @@ function loadTrack(index) {
   if (fsTotalTime) fsTotalTime.innerText = "0:00";
   console.log("Loading track:", track.title, "| color:", track.color);
   applyMobilePlayerColors(track.color || "#7b3f61");
+  const desktopFullscreenContainer = document.getElementById("desktop-fullscreen-player");
+  if (desktopFullscreenContainer && track.color) {
+    desktopFullscreenContainer.style.backgroundColor = track.color;
+    // Overriding any existing background gradients so the flat color remains uniform
+    desktopFullscreenContainer.style.backgroundImage = "none"; 
+  }
   // Sync active states across cards
   syncCardActiveStates();
 
   // Update scroll marquee state
   updateFooterScrollState();
+  updateDesktopFullscreenInfo();
+  updateMiniPlayerInfo();
 
 }
 
@@ -602,8 +778,10 @@ function playTrack() {
         const img = playPauseBtn.querySelector("img");
           img.src = "./spotifyimages/pause_musicbar.png";
           img.alt = "Pause";
+          playPauseBtn.setAttribute("data-tooltip", "Pause");
       }
       syncMobilePlayIcon();
+      syncMiniPlayerPlayIcon();
       if (fsPlayBtn) fsPlayBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
       const playerLeft = document.querySelector(".player-left");
       if (playerLeft) {
@@ -628,8 +806,10 @@ function pauseTrack() {
     const img = playPauseBtn.querySelector("img");
     img.src = "./spotifyimages/play_musicbar.png";
     img.alt = "Play";
+    playPauseBtn.setAttribute("data-tooltip", "Play");
   }
   syncMobilePlayIcon();
+  syncMiniPlayerPlayIcon();
   if (fsPlayBtn) fsPlayBtn.innerHTML = '<i class="fa-solid fa-play"></i>';
   syncCardActiveStates();
   updateFooterScrollState();
@@ -699,6 +879,11 @@ function updateProgressBar() {
   }
   if (fsCurrentTime) fsCurrentTime.innerText = formatTime(audioPlayer.currentTime);
   updateMobileProgressBar(progressPercent); 
+  if (miniPlayerProgressSlider) {
+    miniPlayerProgressSlider.value = progressPercent;
+    updateSliderGradient(miniPlayerProgressSlider, progressPercent);
+  }
+  if (miniPlayerCurrentTime) miniPlayerCurrentTime.innerText = formatTime(audioPlayer.currentTime);
 }
 
 // Timeline Hover Tooltip logic
@@ -730,6 +915,9 @@ function updateDuration() {
   }
   if (fsTotalTime && audioPlayer.duration && !isNaN(audioPlayer.duration)) {
     fsTotalTime.innerText = formatTime(audioPlayer.duration);
+  }
+  if (miniPlayerTotalTime && audioPlayer.duration && !isNaN(audioPlayer.duration)) {
+    miniPlayerTotalTime.innerText = formatTime(audioPlayer.duration);
   }
 }
 
@@ -1296,6 +1484,7 @@ document.addEventListener("DOMContentLoaded", () => {
             setTimeout(() => {
                 loader.style.display = "none";
                 mainContent.style.display = "flex";
+          
             }, 800);
 
         }, 1000); // Loader visible for 1 seconds
@@ -1543,3 +1732,412 @@ function setupSideTooltips() {
     });
   });
 }
+// --- WIRE UP BOTH MINIPLAYER TOGGLE BUTTONS (MAIN PLAYER & FULLSCREEN PLAYER) ---
+function setupMiniPlayerPopupBindings() {
+  const mainMiniplayerBtn = document.querySelector(".player-right [data-tooltip='Miniplayer']");
+  
+  // Target the miniplayer control button inside the desktop fullscreen control deck slot
+  const fsPlayerSlot = document.getElementById("dsk-fs-player-slot");
+  function executeToggle() {
+    if (typeof toggleMiniPlayerState === "function") {
+      toggleMiniPlayerState();
+    } else if (typeof window.toggleMiniPlayerState === "function") {
+      window.toggleMiniPlayerState();
+    }
+  }
+  // 1. Regular bottom playbar button click
+  if (mainMiniplayerBtn) {
+    mainMiniplayerBtn.addEventListener("click", function(e) {
+      e.stopPropagation();
+      toggleMiniPlayerState();
+    });
+  }
+
+  // 2. Desktop Fullscreen view button click via delegation
+  if (fsPlayerSlot) {
+    fsPlayerSlot.addEventListener("click", function(e) {
+      const btn = e.target.closest("[data-tooltip=' Open Miniplayer'], [data-tooltip='Close Miniplayer']");
+      if (btn) {
+        e.stopPropagation();
+        e.preventDefault();
+        
+        // Open the miniplayer directly on top of the fullscreen layout
+        toggleMiniPlayerState();
+      }
+    });
+  }
+}
+// Miniplayer
+// --- MODERN SPOTIFY WIDGET CONTROLLER ---
+let miniPlayerPopup;
+let miniPlayerHomeParent = null;
+let miniPlayerHomeNextSibling = null;
+let miniPlayerCover, miniPlayerTrackTitle, miniPlayerTrackArtist;
+let miniPlayerPlayBtn, miniPlayerPrevBtn, miniPlayerNextBtn;
+let miniPlayerProgressSlider, miniPlayerCurrentTime, miniPlayerTotalTime;
+
+// --- UPDATED SPOTIFY MINI PLAYER WIDGET CONTROLLER ---
+function setupMiniPlayerPopup() {
+  const miniplayerBtn = document.getElementById("miniplayer-btn");
+  const fsMiniplayerBtn = null; // it's the same button, relocated — no separate element exists
+  // Re-bind to layout UI nodes
+  miniPlayerPopup = document.getElementById("mini-player-popup");
+  if (miniPlayerPopup && !miniPlayerHomeParent) {
+    miniPlayerHomeParent = miniPlayerPopup.parentNode;
+    miniPlayerHomeNextSibling = miniPlayerPopup.nextSibling;
+  }
+  miniPlayerCover = document.getElementById("mini-player-cover");
+  miniPlayerTrackTitle = document.getElementById("mini-player-track-title");
+  miniPlayerTrackArtist = document.getElementById("mini-player-track-artist");
+  miniPlayerPlayBtn = document.getElementById("mini-player-play-btn");
+  miniPlayerPrevBtn = document.getElementById("mini-player-prev");
+  miniPlayerNextBtn = document.getElementById("mini-player-next");
+  miniPlayerProgressSlider = document.getElementById("mini-player-progress-slider");
+  miniPlayerCurrentTime = document.getElementById("mini-player-current-time");
+  miniPlayerTotalTime = document.getElementById("mini-player-total-time");
+  
+  const closeBtn = document.getElementById("mini-player-close-btn");
+  const collapseBtn = document.getElementById("mini-player-collapse-btn");
+  const heartBtn = document.getElementById("mini-player-heart-btn");
+
+  if (!miniPlayerPopup) return;
+
+  // Helper function to manage active styling state across all control locations with sequential loader
+  function toggleMiniPlayerState(forceState) {
+    if (songDatabase.length === 0 || !songDatabase[currentTrackIndex]) return;
+    
+    let isOpen;
+    if (typeof forceState === "boolean") {
+      isOpen = forceState;
+    } else {
+      isOpen = !miniPlayerPopup.classList.contains("open");
+    }
+
+    if (isOpen) {
+      const fsOverlay = document.getElementById("desktop-fullscreen-player");
+      const nativeFsEl = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+      if (fsOverlay && nativeFsEl === fsOverlay) {
+        const exitFS = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+        if (exitFS) exitFS.call(document);
+        fsOverlay.classList.add("open");
+        fsOverlay.style.display = "block";
+         }
+      miniPlayerPopup.classList.add("open");
+     
+      
+      // Get the reference screen elements
+      const flashScreen = document.getElementById("mp-flash-screen");
+      const loaderScreen = document.getElementById("mp-loader-screen");
+      
+      if (flashScreen && loaderScreen) {
+        flashScreen.classList.add("active");
+        
+        setTimeout(() => {
+          flashScreen.classList.remove("active");
+          loaderScreen.classList.add("active");
+          
+          setTimeout(() => {
+            loaderScreen.classList.remove("active");
+            updateMiniPlayerInfo();
+            syncMiniPlayerPlayIcon();
+          }, 500); 
+          
+        }, 150);
+      } else {
+        updateMiniPlayerInfo();
+        syncMiniPlayerPlayIcon();
+      }
+      
+      if (miniplayerBtn) {
+        miniplayerBtn.classList.add("active");
+        miniplayerBtn.setAttribute("data-tooltip", "Close miniplayer");
+      }
+      if (fsMiniplayerBtn) {
+        fsMiniplayerBtn.classList.add("active");
+        fsMiniplayerBtn.setAttribute("data-tooltip", "Open Miniplayer");
+      }
+    } else {
+      
+      miniPlayerPopup.classList.remove("open");
+      if (miniplayerBtn) {
+        miniplayerBtn.classList.remove("active");
+        miniplayerBtn.setAttribute("data-tooltip", " Open Miniplayer");
+      }
+      if (fsMiniplayerBtn) {
+        fsMiniplayerBtn.classList.remove("active");
+        fsMiniplayerBtn.setAttribute("data-tooltip", "Open Miniplayer");
+      }
+    }
+  }
+
+  // Bind Open/Toggle actions
+  if (miniplayerBtn) {
+    miniplayerBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleMiniPlayerState();
+    });
+  }
+  if (fsMiniplayerBtn) {
+    fsMiniplayerBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      toggleMiniPlayerState();
+    });
+  }
+
+  // Bind Close and Collapse actions to dismiss the popup widget
+  if (closeBtn) closeBtn.addEventListener("click", () => toggleMiniPlayerState(false));
+  if (collapseBtn) collapseBtn.addEventListener("click", () => toggleMiniPlayerState(false));
+
+  // Control Row Nav Action Bindings
+  if (miniPlayerPlayBtn) miniPlayerPlayBtn.addEventListener("click", togglePlay);
+  if (miniPlayerPrevBtn) miniPlayerPrevBtn.addEventListener("click", prevTrack);
+  if (miniPlayerNextBtn) miniPlayerNextBtn.addEventListener("click", nextTrack);
+
+  // Sync Shuffle and Repeat options if toggled inside the layout
+  const widgetShuffle = document.getElementById("mini-player-shuffle");
+  const widgetRepeat = document.getElementById("mini-player-repeat");
+  if (widgetShuffle) widgetShuffle.addEventListener("click", toggleShuffle);
+  if (widgetRepeat) widgetRepeat.addEventListener("click", toggleRepeat);
+
+  // Linked tracks heart button functionality
+  if (heartBtn) {
+    heartBtn.addEventListener("click", () => {
+      if (likeBtn) likeBtn.click();
+      const isLiked = likeBtn && likeBtn.classList.contains("active");
+      heartBtn.innerHTML = isLiked ? '<i class="bi bi-check-circle-fill" style="color:#1ed760;"></i>' : '<i class="bi bi-plus-circle"></i>';
+    });
+  }
+
+  // Timeline Progress Scrubber
+  if (miniPlayerProgressSlider) {
+    miniPlayerProgressSlider.addEventListener("input", (e) => {
+      if (!audioPlayer.duration || isNaN(audioPlayer.duration)) return;
+      audioPlayer.currentTime = (e.target.value / 100) * audioPlayer.duration;
+    });
+  }
+}
+
+function updateMiniPlayerInfo() {
+  const track = songDatabase[currentTrackIndex];
+  if (!track || !miniPlayerPopup || !miniPlayerPopup.classList.contains("open")) return;
+
+  if (miniPlayerCover) miniPlayerCover.src = track.cover;
+  if (miniPlayerTrackTitle) miniPlayerTrackTitle.innerText = track.title;
+  if (miniPlayerTrackArtist) miniPlayerTrackArtist.innerText = track.artist;
+  
+  const miniPlayerCanvas = document.getElementById("mini-player-canvas");
+  if (miniPlayerCanvas && track.color) {
+      miniPlayerCanvas.style.backgroundColor = track.color; 
+  }
+  
+  if (audioPlayer.duration && !isNaN(audioPlayer.duration)) {
+    const currentPct = (audioPlayer.currentTime / audioPlayer.duration) * 100;
+    if (miniPlayerProgressSlider) miniPlayerProgressSlider.value = currentPct;
+    if (miniPlayerCurrentTime) miniPlayerCurrentTime.innerText = formatTime(audioPlayer.currentTime);
+    if (miniPlayerTotalTime) miniPlayerTotalTime.innerText = formatTime(audioPlayer.duration);
+  }
+}
+
+function syncMiniPlayerPlayIcon() {
+  if (!miniPlayerPlayBtn) return;
+  miniPlayerPlayBtn.innerHTML = isPlaying
+    ? '<i class="bi bi-pause-fill"></i>'
+    : '<i class="bi bi-play-fill"></i>';
+}
+
+
+
+
+
+
+
+// Automatically rescue the player footer from the desktop fullscreen container on mobile resize
+function handleResponsivePlayerRescue() {
+  const playerFooter = document.querySelector('.player');
+  const playerAnchor = document.querySelector('#player-anchor');
+  const desktopFullscreen = document.querySelector('#desktop-fullscreen-player');
+  
+  if (!playerFooter || !playerAnchor) return;
+
+  // Check if screen is mobile size
+  if (window.innerWidth <= 768) {
+    // If the player footer is currently trapped inside the desktop fullscreen container...
+    if (desktopFullscreen && desktopFullscreen.contains(playerFooter)) {
+      // 1. Put the player footer back in its original home right before the closing tags
+      playerAnchor.parentNode.insertBefore(playerFooter, playerAnchor.nextSibling);
+      
+      // 2. Turn off the desktop fullscreen player visibility state
+      desktopFullscreen.classList.remove('open'); 
+      // If your JS uses inline styles instead of classes, uncomment the line below:
+      // desktopFullscreen.style.display = 'none';
+      
+      console.log("Mobile view detected: Player rescued from desktop fullscreen slot.");
+    }
+  }
+}
+
+// Watch for screen resizing and check on initial load
+window.addEventListener('resize', handleResponsivePlayerRescue);
+window.addEventListener('DOMContentLoaded', handleResponsivePlayerRescue);
+
+
+// =====================================================================
+// DESKTOP WINDOW DRAG & RESIZE ENGINE FOR MINIPLAYER
+// =====================================================================
+(function initMiniPlayerWindowManager() {
+  const miniPlayer = document.getElementById("mini-player-popup");
+  if (!miniPlayer) return;
+
+  // Find the header section inside your miniplayer to use as the drag handle
+  const header = miniPlayer.querySelector(".mp-header") || miniPlayer;
+  const handles = miniPlayer.querySelectorAll(".mp-resizable-handle");
+  
+  // Sizing Bounds
+  const MIN_WIDTH = 260;
+  const MAX_WIDTH = 600;
+  const MIN_HEIGHT = 260;
+  const MAX_HEIGHT = 600;
+
+  // -------------------------------------------------------------------
+  // 1. WINDOW DRAGGING LOGIC (Move anywhere on screen)
+  // -------------------------------------------------------------------
+  let isDraggingWindow = false;
+  let startMouseX = 0;
+  let startMouseY = 0;
+  let startPlayerLeft = 0;
+  let startPlayerTop = 0;
+
+  header.addEventListener("mousedown", function(e) {
+    // Do not initiate a window move if clicking buttons, sliders, or resize handles
+    if (e.target.closest("button") || e.target.closest("input") || e.target.closest(".mp-resizable-handle")) {
+      return;
+    }
+    
+    e.preventDefault();
+    isDraggingWindow = true;
+
+    // Convert CSS bottom/right alignment to computed top/left coordinates on first drag
+    const rect = miniPlayer.getBoundingClientRect();
+    miniPlayer.style.bottom = "auto";
+    miniPlayer.style.right = "auto";
+    miniPlayer.style.left = rect.left + "px";
+    miniPlayer.style.top = rect.top + "px";
+
+    startMouseX = e.clientX;
+    startMouseY = e.clientY;
+    startPlayerLeft = rect.left;
+    startPlayerTop = rect.top;
+
+    document.addEventListener("mousemove", handleWindowMove);
+    document.addEventListener("mouseup", stopWindowMove);
+  });
+
+  function handleWindowMove(e) {
+    if (!isDraggingWindow) return;
+    
+    const deltaX = e.clientX - startMouseX;
+    const deltaY = e.clientY - startMouseY;
+
+    let newLeft = startPlayerLeft + deltaX;
+    let newTop = startPlayerTop + deltaY;
+
+    // Keep window inside screen boundary edges
+    if (newLeft < 0) newLeft = 0;
+    if (newTop < 0) newTop = 0;
+    if (newLeft + miniPlayer.offsetWidth > window.innerWidth) {
+      newLeft = window.innerWidth - miniPlayer.offsetWidth;
+    }
+    if (newTop + miniPlayer.offsetHeight > window.innerHeight) {
+      newTop = window.innerHeight - miniPlayer.offsetHeight;
+    }
+
+    miniPlayer.style.left = newLeft + "px";
+    miniPlayer.style.top = newTop + "px";
+  }
+
+  function stopWindowMove() {
+    isDraggingWindow = false;
+    document.removeEventListener("mousemove", handleWindowMove);
+    document.removeEventListener("mouseup", stopWindowMove);
+  }
+
+  // -------------------------------------------------------------------
+  // 2. WINDOW RESIZING LOGIC (Resizes from any edge/corner)
+  // -------------------------------------------------------------------
+  let currentHandle = null;
+  let startWidth = 0;
+  let startHeight = 0;
+
+  handles.forEach(handle => {
+    handle.addEventListener("mousedown", function(e) {
+      e.preventDefault();
+      e.stopPropagation(); // Prevents drag conflict
+      currentHandle = handle;
+      
+      const rect = miniPlayer.getBoundingClientRect();
+      // Enforce operational top/left parameters
+      miniPlayer.style.bottom = "auto";
+      miniPlayer.style.right = "auto";
+      miniPlayer.style.left = rect.left + "px";
+      miniPlayer.style.top = rect.top + "px";
+
+      startWidth = miniPlayer.offsetWidth;
+      startHeight = miniPlayer.offsetHeight;
+      startPlayerLeft = rect.left;
+      startPlayerTop = rect.top;
+      startMouseX = e.clientX;
+      startMouseY = e.clientY;
+
+      document.addEventListener("mousemove", handleWindowResize);
+      document.addEventListener("mouseup", stopWindowResize);
+    });
+  });
+
+  function handleWindowResize(e) {
+    if (!currentHandle) return;
+
+    const deltaX = e.clientX - startMouseX;
+    const deltaY = e.clientY - startMouseY;
+
+    // North (Top drag) changes height and pulls the top position up/down
+    if (currentHandle.classList.contains("n") || currentHandle.classList.contains("nw") || currentHandle.classList.contains("ne")) {
+      const newHeight = startHeight - deltaY;
+      if (newHeight >= MIN_HEIGHT && newHeight <= MAX_HEIGHT) {
+        miniPlayer.style.height = newHeight + "px";
+        miniPlayer.style.top = (startPlayerTop + deltaY) + "px";
+      }
+    }
+    
+    // South (Bottom drag) changes height uniformly down
+    if (currentHandle.classList.contains("s") || currentHandle.classList.contains("sw") || currentHandle.classList.contains("se")) {
+      const newHeight = startHeight + deltaY;
+      if (newHeight >= MIN_HEIGHT && newHeight <= MAX_HEIGHT) {
+        miniPlayer.style.height = newHeight + "px";
+      }
+    }
+
+    // West (Left drag) changes width and pulls left position left/right
+    if (currentHandle.classList.contains("w") || currentHandle.classList.contains("nw") || currentHandle.classList.contains("sw")) {
+      const newWidth = startWidth - deltaX;
+      if (newWidth >= MIN_WIDTH && newWidth <= MAX_WIDTH) {
+        miniPlayer.style.width = newWidth + "px";
+        miniPlayer.style.left = (startPlayerLeft + deltaX) + "px";
+      }
+    }
+
+    // East (Right drag) changes width uniformly right
+    if (currentHandle.classList.contains("e") || currentHandle.classList.contains("ne") || currentHandle.classList.contains("se")) {
+      const newWidth = startWidth + deltaX;
+      if (newWidth >= MIN_WIDTH && newWidth <= MAX_WIDTH) {
+        miniPlayer.style.width = newWidth + "px";
+      }
+    }
+  }
+
+  function stopWindowResize() {
+    currentHandle = null;
+    document.removeEventListener("mousemove", handleWindowResize);
+    document.removeEventListener("mouseup", stopWindowResize);
+  }
+})();
+

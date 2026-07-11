@@ -19,7 +19,9 @@ body{
 /* NAVBAR */
 
 .navbar{
-    width:100%;
+    width: calc(100% + 16px) !important; /* Counteracts the 8px body padding on left & right */
+    margin-left: -8px !important;       /* Pulls the navbar perfectly flush to the left edge */
+    margin-right: -8px !important;
     min-height: 3.875rem;
     background:black;
     display:flex;
@@ -27,11 +29,18 @@ body{
     align-items:center;
     padding:0 25px;
     overflow:visible;
-    z-index:9999;
+    z-index:10000001;
     position: relative;
     line-height:1;
     flex-shrink:0;
     flex-wrap: nowrap;
+}
+.logo::after,
+.home-icon::after,
+.search-icon::after,
+.nav-icon-btn::after,
+.profile-btn::after {
+    z-index: 100002 !important; 
 }
 
 .nav-left{
@@ -1615,7 +1624,7 @@ flex: 1;
   content: attr(data-tooltip);
   position: absolute;
   bottom: 45px;
-  left: 50%;
+  left: 10%;
   transform: translateX(-50%) translateY(4px);
   background-color: #282828;
   color: white;
@@ -1640,6 +1649,17 @@ flex: 1;
   opacity: 1;
   visibility: visible;
   transform: translateX(-50%) translateY(0);
+}
+.player-btn:hover {
+  color: white;
+}
+
+.player-btn.active {
+  color: #1ed760;
+}
+
+.player-btn.active:hover {
+  color: #1ed760;
 }
 /* Hide main content initially */
 #main-content {
@@ -2097,7 +2117,7 @@ font-size: 22px;
     visibility:hidden;
     transition:opacity 0.2s ease, visibility 0s linear 0.2s;
     pointer-events:none;
-    z-index:100000;
+    z-index:10000002;
 }
 .lib-item-liked-icon{
     width:54px;
@@ -2238,4 +2258,509 @@ font-size: 22px;
 .mobile-search-result-actions i{
     cursor:pointer;
 }
+.desktop-fullscreen-player {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; /* Pushes content to the top/center and player to the absolute bottom */
+    width: 100%;
+    height: 100vh; /* Takes full viewport height */
+    position: fixed; /* Ensures it sits on top of everything when open */
+    top: 0;
+    left: 0;
+    background: #121212;
+    transition: background-color 0.6s ease;
+    box-sizing: border-box;
+    padding-top: 60px; /* Leaves space for your centered artwork and title */
+    z-index: 999999;
+}
 
+.desktop-fullscreen-player.open {
+    display: flex !important;
+}
+.desktop-fullscreen-player.open:not(:fullscreen) {
+    height: calc(100vh - 3.875rem); /* Shrinks it so it sits perfectly below your 3.875rem navbar */
+    top: 3.875rem; /* Pushes it down below your navbar */
+}
+
+.dsk-fs-header{
+   width: 100%;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    box-sizing: border-box;
+}
+
+#dsk-fs-window-toggle {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 20px;
+    cursor: pointer;
+    transition: color 0.2s ease, transform 0.2s ease;
+}
+#dsk-fs-window-toggle:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+#dsk-fs-header-title{
+    color:#fff;
+    font-size:18px ;
+    font-weight:400;
+    cursor: pointer;
+}
+#dsk-fs-header-title:hover{
+    text-decoration: underline;
+}
+
+#dsk-fs-window-toggle::after {
+    top: 45px !important;      
+    bottom: auto !important;    
+    z-index: 100003 !important; 
+    right: 0 !important;         
+    left: auto !important;       
+    transform: none !important;
+}
+
+#dsk-fs-window-toggle::before {
+    top: 38px !important;        
+    bottom: auto !important;
+    border-color: transparent transparent rgba(0, 0, 0, 0.8) transparent !important; 
+    right: 10px !important;      
+    transform: none !important;
+}
+
+.dsk-fs-cover-wrap {
+    width: min(42vw, 50vh);
+    height: min(42vw, 50vh);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+    margin-bottom: 14px;
+    margin-top: auto; /* Pushes artwork down away from the header */
+}
+
+.dsk-fs-cover{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+    display:block;
+}
+
+.dsk-fs-track-info {
+    text-align: center;
+    margin-bottom: auto; /* Pushes text up away from the bottom bar, keeping it balanced */
+}
+.dsk-fs-track-title{
+    color:#fff;
+    font-size:24px;
+    font-weight:700;
+}
+
+.dsk-fs-track-artist{
+    color:#d0d0d0;
+    font-size:15px;
+    margin-top:6px;
+}
+
+
+.dsk-fs-player-slot {
+    width: 100% !important; /* Forces it to go edge-to-edge full width */
+    max-width: 100% !important; /* Overrides the 600px limit */
+    margin-top: auto;
+}
+
+/* Forces the nested player inside the slot to match the main page layout */
+.dsk-fs-player-slot .player {
+    position: static !important;
+    width: 100% !important;
+    background-color: #000000 !important; /* True black background just like the main page footer */
+    border-radius: 0px !important; /* Removes the rounded corners so it sits flush with the screen edges */
+    padding: 0 16px;
+    min-height: 5.625rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* =======================================================
+   TRUE PLATFORM PICTURE-IN-PICTURE MINI-PLAYER LAYOUT
+   ======================================================= */
+
+.mini-player-popup {
+    display: none;
+    position: fixed;
+    /* Situate strictly at the bottom-right corner of the viewport */
+    bottom: 24px;
+    right: 24px;
+    width: 340px;
+    height: 340px;
+    background: #121212;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8);
+    /* High z-index ensures it overlays everything on the page, including navbars */
+    z-index: 2000000 !important;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    
+    /* Boundary rules for the drag resize engine */
+    min-width: 260px;
+    max-width: 600px;
+    min-height: 260px;
+    max-height: 600px;
+}
+
+.mini-player-popup.open {
+    display: flex;
+    flex-direction: column;
+}
+
+/* --- FIXED TOP WINDOW HEADER --- */
+.mini-player-window-header {
+    height: 38px;
+    background: #1a1a1a;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.3);
+    flex-shrink: 0;
+}
+
+
+.mp-header-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #cccccc;
+}
+
+.mp-header-icon {
+    font-size: 14px;
+}
+
+.mp-header-url {
+    font-size: 11px;
+    font-family: system-ui, -apple-system, sans-serif;
+    color: #a7a7a7;
+}
+
+.mp-header-right {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.mp-header-btn {
+    background: transparent;
+    border: none;
+    color: #cccccc;
+    font-size: 13px;
+    cursor: pointer;
+    padding: 2px;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.mp-header-btn:hover {
+    color: #ffffff;
+}
+
+
+/* Middle canvas background area */
+.mini-player-middle-canvas {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    flex-grow: 1;         /* Fills up all available vertical room */
+    width: 100%;
+    overflow: hidden;     
+    padding: 20px;        /* Safe padding border around contents */
+    box-sizing: border-box;
+}
+.mini-player-card-wrapper {
+    position: relative;
+     width: 85%;           
+    max-width: 380px;     
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;  /* Slightly increased radius to match the larger size */
+    overflow: hidden;
+    margin-bottom: 16px;  /* Spacing for the control/progress bar rows underneath */
+    box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
+}
+
+/* Ensure the image stretches to fill the larger card wrapper dimensions */
+.mini-player-card-art {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;    /* Prevents the image from being squished or distorted */
+    display: block;
+}
+
+/* --- HOVER CONTROL OVERLAY SYSTEM --- */
+.mini-player-hover-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.65);
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Centers the control grid directly inside the artwork */
+    padding: 12px;
+    
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s;
+}
+
+.mini-player-card-wrapper:hover .mini-player-hover-overlay {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* ENLARGED BUTTON CONTROLS ALIGNED TO CENTER */
+.mp-overlay-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 14px; /* Increased separation */
+    width: 100%;
+}
+
+.mp-ov-btn {
+    background: transparent;
+    border: none;
+    color: #e0e0e0;
+    font-size: 18px; /* Enlarged from 14px */
+    cursor: pointer;
+    transition: color 0.15s, transform 0.1s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.mp-ov-btn:hover {
+    color: #ffffff;
+    transform: scale(1.1);
+}
+
+.mp-ov-play {
+    width: 46px; /* Enlarged from 36px */
+    height: 46px;
+    border-radius: 50%;
+    background: #ffffff;
+    color: #000000;
+    border: none;
+    font-size: 22px; /* Enlarged from 16px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.4);
+    transition: transform 0.1s ease;
+    flex-shrink: 0;
+}
+
+.mp-ov-play:hover {
+    transform: scale(1.08);
+}
+
+/* --- REPOSITIONED SLIDER LINE AT TOP MARGIN OF FOOTER --- */
+.mp-overlay-progress-container {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 0px 0px 0px 0px;
+    height: 2px;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
+    z-index:99;
+    margin-bottom: 53px;
+    /* Invisible by default, fades in on parent canvas hover */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease, visibility 0.2s;
+}
+
+.mini-player-middle-canvas:hover .mp-overlay-progress-container {
+    opacity: 1;
+    visibility: visible;
+}
+
+.mp-ov-time {
+    color: #e0e0e0;
+    font-size: 10px;
+    min-width: 24px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+
+.mp-ov-slider-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+}
+
+.mp-ov-slider-wrap .mini-player-progress-slider {
+    width: 100%;
+    -webkit-appearance: none;
+    appearance: none;
+    height: 4px;
+    border-radius: 2px;
+    background: rgba(255, 255, 255, 0.35);
+    outline: none;
+    cursor: pointer;
+}
+
+.mp-ov-slider-wrap .mini-player-progress-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #ffffff;
+}
+
+/* --- FIXED BOTTOM FOOTER --- */
+.mini-player-window-footer {
+    height: 58px;
+    background: #121212;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 14px;
+    flex-shrink: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.mp-footer-info {
+    min-width: 0;
+    flex: 1;
+}
+
+.mp-footer-title {
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 700;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mp-footer-artist {
+    color: #b3b3b3;
+    font-size: 11px;
+    margin-top: 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.mp-footer-plus-btn {
+    background: transparent;
+    border: none;
+    color: #cccccc;
+    font-size: 18px;
+    cursor: pointer;
+    padding-left: 8px;
+    transition: color 0.2s;
+}
+
+.mp-footer-plus-btn:hover {
+    color: #ffffff;
+}
+/* --- WHITE FLASH OVERLAY LAYER --- */
+.mp-flash-screen {
+    position: absolute;
+    inset: 0;
+    background: #ffffff;
+    z-index: 100000; /* Placed over everything else */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.1s ease;
+}
+.mp-flash-screen.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* --- DARK SPOTIFY THEMED LOADER OVERLAY --- */
+.mp-loader-screen {
+    position: absolute;
+    inset: 0;
+    background: #121212; /* Authentic dark Spotify background tone */
+    z-index: 99999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+}
+.mp-loader-screen.active {
+    opacity: 1;
+    visibility: visible;
+    animation: mpPageVibrateMild 0.25s infinite linear;
+}
+
+/* Vibrating and Pulsing Green Logo Layout */
+.mp-loader-logo-wrapper {
+    color: #1ed760; /* Spotify Green */
+    font-size: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.mp-loader-screen.active .mp-loader-logo-wrapper {
+    animation: mpLogoPulse 0.4s infinite ease-in-out;
+}
+
+/* Keyframe Animations for Vibration Visual Effects */
+@keyframes mpPageVibrateMild {
+    0% { transform: translate(0, 0); }
+    10% { transform: translate(-0.8px, 0.5px); }
+    20% { transform: translate(0.5px, -0.8px); }
+    30% { transform: translate(-0.5px, -0.5px); }
+    40% { transform: translate(0.8px, 0.4px); }
+    50% { transform: translate(-0.4px, 0.8px); }
+    60% { transform: translate(0.5px, -0.4px); }
+    70% { transform: translate(-0.8px, -0.5px); }
+    80% { transform: translate(0.6px, 0.6px); }
+    90% { transform: translate(-0.4px, -0.6px); }
+    100% { transform: translate(0, 0); }
+}
+
+/* --- PULSE KEYFRAMES FOR LOGO --- */
+@keyframes mpLogoPulse {
+    0%, 100% { transform: scale(1); opacity: 0.95; }
+    50% { transform: scale(1.1); opacity: 1; }
+}
+
+.mp-resizable-handle {
+    position: absolute;
+    z-index: 100005; /* Stays atop flash and loader screens */
+    background: transparent; /* Set to rgba(255,0,0,0.2) for debugging visual placement if needed */
+}
+
+/* Cardinal direction bars (Edge thicknesses) */
+.mp-resizable-handle.n { top: -3px; left: 6px; right: 6px; height: 6px; cursor: ns-resize; }
+.mp-resizable-handle.s { bottom: -3px; left: 6px; right: 6px; height: 6px; cursor: ns-resize; }
+.mp-resizable-handle.e { right: -3px; top: 6px; bottom: 6px; width: 6px; cursor: ew-resize; }
+.mp-resizable-handle.w { left: -3px; top: 6px; bottom: 6px; width: 6px; cursor: ew-resize; }
+
+/* Corner hitboxes */
+.mp-resizable-handle.nw { top: -3px; left: -3px; width: 10px; height: 10px; cursor: nwse-resize; }
+.mp-resizable-handle.ne { top: -3px; right: -3px; width: 10px; height: 10px; cursor: nesw-resize; }
+.mp-resizable-handle.sw { bottom: -3px; left: -3px; width: 10px; height: 10px; cursor: nesw-resize; }
+.mp-resizable-handle.se { bottom: -3px; right: -3px; width: 10px; height: 10px; cursor: nwse-resize; }

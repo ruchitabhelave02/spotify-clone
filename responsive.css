@@ -779,9 +779,8 @@ body{
 /* SEARCH TOPBAR VARIANT */
 .mobile-topbar-search{
     justify-content:space-between;
-    background:#121212;
-    box-shadow:0 8px 15px rgba(0,0,0,0.6);
-
+background:#121212;
+    box-shadow:0 8px 15px rgba(0,0,0,0.6); 
 }
 
 .mobile-search-heading{
@@ -885,7 +884,7 @@ body{
     position:fixed;
     inset:0;
     background:#121212;
-    z-index:9990; /* below .player (9998) and .mobile-nav (99999) so both stay visible */
+    z-index:9990; 
     display:none;
     flex-direction:column;
     padding:14px 16px 170px; /* extra bottom room so results aren't hidden behind mini-player + nav */
@@ -929,6 +928,22 @@ body{
     flex-direction:column;
     gap:2px;
 }
+.desktop-fullscreen-player,
+    .desktop-fullscreen-player.open{
+        display:none !important;
+    }
+    .mini-player-body{
+        display: none !important;
+    }
+    .mini-player-container{ /* replace with the actual outer wrapper class */
+        display:none !important;
+    }
+    .mini-player-header{
+        display: none !important;
+    }
+   #mini-player-popup {
+    display: none !important;
+  } 
 
 }
 
@@ -938,7 +953,6 @@ body{
 .sidebar{
     display:none;
 }
-
 .tablet-sidebar{
     display:flex;
 }
