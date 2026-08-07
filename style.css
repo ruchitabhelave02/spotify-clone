@@ -4,6 +4,12 @@
     box-sizing:border-box;
     font-family:'Poppins',sans-serif;
 }
+html{
+    height: 100%;
+    overflow: hidden;
+    overscroll-behavior: none;
+}
+
 
 body{
     background:black;
@@ -14,6 +20,8 @@ body{
     padding: 8px;
     display: flex;
     flex-direction: column;
+    overscroll-behavior: none;
+
 }
 
 /* NAVBAR */
@@ -695,36 +703,17 @@ content:"Home";
 }
 
 /* SCROLLABLE AREA */
-.sidebar-scroll{
-    flex:1;
-    overflow-y:auto;
+.sidebar-scroll {
+    flex: 1;
+    overflow-y: auto;
     padding: 0 10px 10px 10px;
-    min-height:0;
+    min-height: 0;
+    scrollbar-width: none;      
+    -ms-overflow-style: none;  
 }
 
-/* CUSTOM SPOTIFY SCROLLBAR */
-
-.sidebar-scroll::-webkit-scrollbar{
-    width:0px;
-    transition:0.3s;
-}
-
-.sidebar-scroll::-webkit-scrollbar-track{
-    background:transparent;
-}
-
-.sidebar-scroll::-webkit-scrollbar-thumb{
-    background:#5a5a5a;
-}
-
-/* SHOW SCROLLBAR WHEN HOVERING MIDDLE SECTION */
-
-.sidebar-scroll:hover::-webkit-scrollbar{
-    width:12px;
-}
-
-.sidebar-scroll:hover::-webkit-scrollbar-thumb:hover{
-    background:#888;
+.sidebar-scroll::-webkit-scrollbar {
+    display: none;              
 }
 
 /* Library List Container */
@@ -1036,39 +1025,20 @@ content:"Home";
     overflow-y:auto;
     position:relative;
     overflow-anchor: none;
+    overscroll-behavior: contain;
     
 }
 
-/* CONTENT SCROLLBAR - SAME AS SIDEBAR */
-.content::-webkit-scrollbar{
-    width:0;
+.content {
+    overflow-y: auto;
+    scrollbar-width: none;      
+    -ms-overflow-style: none;  
 }
 
-/* TRACK */
-
-.content::-webkit-scrollbar-track{
-    background:transparent;
+.content::-webkit-scrollbar {
+    display: none;              
 }
-
-/* THUMB */
-
-.content::-webkit-scrollbar-thumb{
-    background:#5a5a5a;
-    
-}
-
-/* SHOW ON HOVER */
-
-.content:hover::-webkit-scrollbar{
-    width:12px;
-}
-
-.content::-webkit-scrollbar-thumb:hover{
-    background:#888;
-}
-
 /* FOOTER */
-
 .footer-bar{
 
     width:100%;
@@ -1079,7 +1049,6 @@ content:"Home";
     padding:12px 6px;
     margin-top: 10px;
 }
-
 .footer-links-container{
     display:flex;
     justify-content:space-between;
@@ -1366,6 +1335,7 @@ flex: 1;
 
 .control-btn.active img {
   opacity: 1;
+   filter: invert(64%) sepia(89%) saturate(451%) hue-rotate(93deg) brightness(94%) contrast(94%);
 }
 .control-btn.play-btn {
    background:transparent;
@@ -1414,7 +1384,7 @@ flex: 1;
   background: #4d4d4d;
   cursor: pointer;
   outline: none;
-  transition: background 0.2s ease;
+  transition: 0.2s ease;
 }
 
 .timeline-slider::-webkit-slider-runnable-track {
@@ -1804,6 +1774,9 @@ font-size: 22px;
     margin-left:-20px;
     padding:18px 20px 14px;
     background: #181818;
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
 }
 .quick-section{
      margin-left: -20px;
@@ -2036,35 +2009,18 @@ font-size: 22px;
      border-radius:12px 12px 0 0;
     transition:box-shadow 0.3s ease;
 }
-.tablet-scroll{
-    flex:1;
-    overflow-y:auto;
+.tablet-scroll {
+    flex: 1;
+    overflow-y: auto;
     padding: 0 8px 8px 8px;
-    min-height:0;
+    min-height: 0;
+
+    scrollbar-width: none;      /* Firefox */
+    -ms-overflow-style: none;   /* IE & Edge */
 }
-
-.tablet-scroll::-webkit-scrollbar{
-    width:0px;
-    transition:0.3s;
+.tablet-scroll::-webkit-scrollbar {
+    display: none;              /* Chrome, Edge, Safari */
 }
-
-.tablet-scroll::-webkit-scrollbar-track{
-    background:transparent;
-}
-
-.tablet-scroll::-webkit-scrollbar-thumb{
-    background:#5a5a5a;
-}
-
-.tablet-scroll:hover::-webkit-scrollbar{
-    width:12px;
-}
-
-.tablet-scroll:hover::-webkit-scrollbar-thumb:hover{
-    background:#888;
-}
-
-
 /* Library collapse icon (hidden until sidebar header is hovered) */
 .lib-collapse-icon{
     position:relative;
@@ -2370,17 +2326,16 @@ font-size: 22px;
 
 
 .dsk-fs-player-slot {
-    width: 100% !important; /* Forces it to go edge-to-edge full width */
-    max-width: 100% !important; /* Overrides the 600px limit */
+    width: 100% !important; 
+    max-width: 100% !important; 
     margin-top: auto;
 }
 
-/* Forces the nested player inside the slot to match the main page layout */
 .dsk-fs-player-slot .player {
     position: static !important;
     width: 100% !important;
-    background-color: #000000 !important; /* True black background just like the main page footer */
-    border-radius: 0px !important; /* Removes the rounded corners so it sits flush with the screen edges */
+    background-color: #000000 !important; 
+    border-radius: 0px !important; 
     padding: 0 16px;
     min-height: 5.625rem;
     display: flex;
@@ -2388,14 +2343,9 @@ font-size: 22px;
     align-items: center;
 }
 
-/* =======================================================
-   TRUE PLATFORM PICTURE-IN-PICTURE MINI-PLAYER LAYOUT
-   ======================================================= */
-
 .mini-player-popup {
     display: none;
     position: fixed;
-    /* Situate strictly at the bottom-right corner of the viewport */
     bottom: 24px;
     right: 24px;
     width: 340px;
@@ -2404,11 +2354,8 @@ font-size: 22px;
     border-radius: 8px;
     overflow: hidden;
     box-shadow: 0 16px 48px rgba(0, 0, 0, 0.8);
-    /* High z-index ensures it overlays everything on the page, including navbars */
-    z-index: 2000000 !important;
+    z-index: 10000010 !important;
     border: 1px solid rgba(255, 255, 255, 0.08);
-    
-    /* Boundary rules for the drag resize engine */
     min-width: 260px;
     max-width: 600px;
     min-height: 260px;
@@ -2420,7 +2367,6 @@ font-size: 22px;
     flex-direction: column;
 }
 
-/* --- FIXED TOP WINDOW HEADER --- */
 .mini-player-window-header {
     height: 38px;
     background: #1a1a1a;
@@ -2431,25 +2377,20 @@ font-size: 22px;
     border-bottom: 1px solid rgba(0, 0, 0, 0.3);
     flex-shrink: 0;
 }
-
-
 .mp-header-left {
     display: flex;
     align-items: center;
     gap: 8px;
     color: #cccccc;
 }
-
 .mp-header-icon {
     font-size: 14px;
 }
-
 .mp-header-url {
     font-size: 11px;
     font-family: system-ui, -apple-system, sans-serif;
     color: #a7a7a7;
 }
-
 .mp-header-right {
     display: flex;
     align-items: center;
@@ -2471,43 +2412,42 @@ font-size: 22px;
 .mp-header-btn:hover {
     color: #ffffff;
 }
-
-
-/* Middle canvas background area */
 .mini-player-middle-canvas {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    flex-grow: 1;         /* Fills up all available vertical room */
+    flex-grow: 1; 
+    min-height:0;       
     width: 100%;
     overflow: hidden;     
-    padding: 20px;        /* Safe padding border around contents */
+    padding: 20px;        
     box-sizing: border-box;
 }
 .mini-player-card-wrapper {
     position: relative;
-     width: 85%;           
+     width: 85%;
+     height: 85%;           
     max-width: 380px;     
     aspect-ratio: 1 / 1;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 12px;  /* Slightly increased radius to match the larger size */
+    border-radius: 12px;  
     overflow: hidden;
-    margin-bottom: 16px;  /* Spacing for the control/progress bar rows underneath */
+    margin-bottom: 16px; 
+    container-type: size;
+    container-name: mp-canvas;   
     box-shadow: 0 16px 40px rgba(0, 0, 0, 0.65);
 }
 
-/* Ensure the image stretches to fill the larger card wrapper dimensions */
 .mini-player-card-art {
     width: 100%;
     height: 100%;
-    object-fit: cover;    /* Prevents the image from being squished or distorted */
+    object-fit: cover;  
     display: block;
 }
 
-/* --- HOVER CONTROL OVERLAY SYSTEM --- */
 .mini-player-hover-overlay {
     position: absolute;
     inset: 0;
@@ -2527,12 +2467,11 @@ font-size: 22px;
     visibility: visible;
 }
 
-/* ENLARGED BUTTON CONTROLS ALIGNED TO CENTER */
 .mp-overlay-controls {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 14px; /* Increased separation */
+    gap: 14px; 
     width: 100%;
 }
 
@@ -2540,7 +2479,7 @@ font-size: 22px;
     background: transparent;
     border: none;
     color: #e0e0e0;
-    font-size: 18px; /* Enlarged from 14px */
+    font-size: 18px;
     cursor: pointer;
     transition: color 0.15s, transform 0.1s;
     display: flex;
@@ -2554,13 +2493,13 @@ font-size: 22px;
 }
 
 .mp-ov-play {
-    width: 46px; /* Enlarged from 36px */
+    width: 46px; 
     height: 46px;
     border-radius: 50%;
     background: #ffffff;
     color: #000000;
     border: none;
-    font-size: 22px; /* Enlarged from 16px */
+    font-size: 22px; 
     display: flex;
     align-items: center;
     justify-content: center;
@@ -2574,7 +2513,6 @@ font-size: 22px;
     transform: scale(1.08);
 }
 
-/* --- REPOSITIONED SLIDER LINE AT TOP MARGIN OF FOOTER --- */
 .mp-overlay-progress-container {
     position: absolute;
     bottom: 0;
@@ -2589,7 +2527,7 @@ font-size: 22px;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.4), transparent);
     z-index:99;
     margin-bottom: 53px;
-    /* Invisible by default, fades in on parent canvas hover */
+
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.2s ease, visibility 0.2s;
@@ -2632,8 +2570,6 @@ font-size: 22px;
     border-radius: 50%;
     background: #ffffff;
 }
-
-/* --- FIXED BOTTOM FOOTER --- */
 .mini-player-window-footer {
     height: 58px;
     background: #121212;
@@ -2681,12 +2617,11 @@ font-size: 22px;
 .mp-footer-plus-btn:hover {
     color: #ffffff;
 }
-/* --- WHITE FLASH OVERLAY LAYER --- */
 .mp-flash-screen {
     position: absolute;
     inset: 0;
     background: #ffffff;
-    z-index: 100000; /* Placed over everything else */
+    z-index: 100000; 
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.1s ease;
@@ -2695,12 +2630,10 @@ font-size: 22px;
     opacity: 1;
     visibility: visible;
 }
-
-/* --- DARK SPOTIFY THEMED LOADER OVERLAY --- */
 .mp-loader-screen {
     position: absolute;
     inset: 0;
-    background: #121212; /* Authentic dark Spotify background tone */
+    background: #121212;
     z-index: 99999;
     display: flex;
     align-items: center;
@@ -2714,9 +2647,8 @@ font-size: 22px;
     animation: mpPageVibrateMild 0.25s infinite linear;
 }
 
-/* Vibrating and Pulsing Green Logo Layout */
 .mp-loader-logo-wrapper {
-    color: #1ed760; /* Spotify Green */
+    color: #1ed760; 
     font-size: 56px;
     display: flex;
     align-items: center;
@@ -2725,8 +2657,6 @@ font-size: 22px;
 .mp-loader-screen.active .mp-loader-logo-wrapper {
     animation: mpLogoPulse 0.4s infinite ease-in-out;
 }
-
-/* Keyframe Animations for Vibration Visual Effects */
 @keyframes mpPageVibrateMild {
     0% { transform: translate(0, 0); }
     10% { transform: translate(-0.8px, 0.5px); }
@@ -2741,7 +2671,6 @@ font-size: 22px;
     100% { transform: translate(0, 0); }
 }
 
-/* --- PULSE KEYFRAMES FOR LOGO --- */
 @keyframes mpLogoPulse {
     0%, 100% { transform: scale(1); opacity: 0.95; }
     50% { transform: scale(1.1); opacity: 1; }
@@ -2749,8 +2678,8 @@ font-size: 22px;
 
 .mp-resizable-handle {
     position: absolute;
-    z-index: 100005; /* Stays atop flash and loader screens */
-    background: transparent; /* Set to rgba(255,0,0,0.2) for debugging visual placement if needed */
+    z-index: 100005; 
+    background: transparent; 
 }
 
 /* Cardinal direction bars (Edge thicknesses) */
@@ -2764,3 +2693,63 @@ font-size: 22px;
 .mp-resizable-handle.ne { top: -3px; right: -3px; width: 10px; height: 10px; cursor: nesw-resize; }
 .mp-resizable-handle.sw { bottom: -3px; left: -3px; width: 10px; height: 10px; cursor: nesw-resize; }
 .mp-resizable-handle.se { bottom: -3px; right: -3px; width: 10px; height: 10px; cursor: nwse-resize; }
+
+/* Wrapper around each horizontal row so arrows can float over it */
+.album-row-wrapper{
+    position:relative;
+}
+
+/* Floating scroll arrow buttons, overlaid on the row edges */
+.scroll-btn{
+    position:absolute;
+    top:50%;
+    transform:translateY(-50%);
+    width:40px;
+    height:40px;
+    border-radius:50%;
+    border:none;
+    background:#1f1f1f;
+    color:white;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size:18px;
+    cursor:pointer;
+    opacity:0;
+    visibility:hidden;
+    transition:opacity 0.2s ease, background 0.2s ease, transform 0.2s ease;
+    z-index:10;
+    box-shadow:0 4px 10px rgba(0,0,0,0.4);
+}
+
+.album-row-wrapper:hover .scroll-btn{
+    opacity:1;
+    visibility:visible;
+}
+
+.scroll-btn.scroll-left{
+    left:6px;
+}
+
+.scroll-btn.scroll-right{
+    right:6px;
+}
+
+.scroll-btn:hover{
+    background:#1f1f1f;
+    transform:translateY(-50%) scale(1.08);
+}
+.scroll-btn:disabled{
+    opacity:0 !important;
+    visibility:hidden !important;
+    pointer-events:none;
+}
+
+/* Hides the arrow entirely when the row has no overflow to scroll */
+.scroll-btn.scroll-btn-hidden{
+    display:none !important;
+}
+
+.scroll-btn i{
+    pointer-events:none;
+}

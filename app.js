@@ -2,7 +2,7 @@
 
 // 1. Dynamic Song Database and Playback State
 let songDatabase = [];
-let currentTrackIndex = 0; 
+let currentTrackIndex = 0;
 let isPlaying = false;
 let isShuffle = false;
 let isRepeat = false;
@@ -21,7 +21,7 @@ let fullscreenPlayerEl, fsCollapseBtn, fsPlayingFromLabel, fsPlayingFromTitle;
 let fsCover, fsTrackTitle, fsTrackArtist, fsLikeBtn;
 let fsProgressSlider, fsCurrentTime, fsTotalTime;
 let fsShuffleBtn, fsPrevBtn, fsPlayBtn, fsNextBtn, fsRepeatBtn;
-let searchInput, albumCards,quickCards;
+let searchInput, albumCards, quickCards;
 
 // Initialize Player
 function initPlayer() {
@@ -49,17 +49,17 @@ function initPlayer() {
   albumCards = document.querySelectorAll(".album-card");
   quickCards = document.querySelectorAll(".quick-card");
 
-setupTabletTooltips();
-setupSidebarToggle(); 
-setupIconTooltips();
-setupSideTooltips(); 
-setupMobileMiniPlayerButton();
-setupFullScreenPlayer(); 
-setupMobileLibraryView();
-setupMobileSearchView()
-setupDesktopSearchDropdown();
-setupDesktopFullscreenPlayer();
-setupMiniPlayerPopup();
+  setupTabletTooltips();
+  setupSidebarToggle();
+  setupIconTooltips();
+  setupSideTooltips();
+  setupMobileMiniPlayerButton();
+  setupFullScreenPlayer();
+  setupMobileLibraryView();
+  setupMobileSearchView();
+  setupDesktopSearchDropdown();
+  setupDesktopFullscreenPlayer();
+  setupMiniPlayerPopup();
   // Parse all album cards dynamically from the DOM
   parseSongCards();
   // Restore the last played track (if any) instead of always defaulting to index 0
@@ -89,21 +89,21 @@ setupMiniPlayerPopup();
     // Soft sliding seeking
     progressSlider.addEventListener("pointerdown", handleTimelinePointerDown);
   }
-progressSlider.addEventListener("mouseenter", () => {
+  progressSlider.addEventListener("mouseenter", () => {
     updateSliderGradient(progressSlider, progressSlider.value);
-});
+  });
 
-progressSlider.addEventListener("mouseleave", () => {
+  progressSlider.addEventListener("mouseleave", () => {
     updateSliderGradient(progressSlider, progressSlider.value);
-});
+  });
 
-volumeSlider.addEventListener("mouseenter", () => {
+  volumeSlider.addEventListener("mouseenter", () => {
     updateSliderGradient(volumeSlider, volumeSlider.value);
-});
+  });
 
-volumeSlider.addEventListener("mouseleave", () => {
+  volumeSlider.addEventListener("mouseleave", () => {
     updateSliderGradient(volumeSlider, volumeSlider.value);
-});
+  });
 
   // Volume events
   if (volumeSlider) volumeSlider.addEventListener("input", handleVolumeInput);
@@ -123,13 +123,20 @@ volumeSlider.addEventListener("mouseleave", () => {
 
   // Active styles for library items/pills
   setupLibraryInteractions();
-
-
 }
 
 // Parse album cards to build dynamic playlist
 function parseSongCards() {
-  const cardColorPalette = ["#7b3f61","#4a3b6b","#1e5631","#8a3b52","#2c4b6e","#6e2c3e","#5e2530","#4b2a4d"];
+  const cardColorPalette = [
+    "#7b3f61",
+    "#4a3b6b",
+    "#1e5631",
+    "#8a3b52",
+    "#2c4b6e",
+    "#6e2c3e",
+    "#5e2530",
+    "#4b2a4d",
+  ];
   const localSongs = [
     "songs/Humdard  Song  Ek Villain.mp3",
     "songs/Dooron Dooron .mp3",
@@ -160,7 +167,7 @@ function parseSongCards() {
     "songs/Raanjhan.mp3",
     "songs/Arijit Singh - Tera Chehra.mp3",
     "songs/YOUNG GOAT.mp3",
-    "songs/Bekhayali.mp3"
+    "songs/Bekhayali.mp3",
   ];
   songDatabase = [];
 
@@ -178,7 +185,8 @@ function parseSongCards() {
     const rawPath = localSongs[index % localSongs.length];
     const audioUrl = encodeURI(rawPath);
 
-    const color = card.getAttribute("data-color") || cardColorPalette[index % cardColorPalette.length];
+    const color =
+      card.getAttribute("data-color") || cardColorPalette[index % cardColorPalette.length];
 
     let sectionName = "Album";
     const albumContainer = card.closest(".album-container");
@@ -201,7 +209,7 @@ function parseSongCards() {
       audioUrl: audioUrl,
       color: color,
       playingFromLabel: `PLAYING FROM ${sectionName.toUpperCase()}`,
-      playingFromTitle: title
+      playingFromTitle: title,
     });
   });
 
@@ -209,11 +217,15 @@ function parseSongCards() {
     const trackId = songDatabase.length;
     card.setAttribute("data-track-id", trackId);
 
-    const title = card.getAttribute("data-title") || card.querySelector("span")?.innerText.trim() || "Unknown Song";
+    const title =
+      card.getAttribute("data-title") ||
+      card.querySelector("span")?.innerText.trim() ||
+      "Unknown Song";
     const artist = card.getAttribute("data-artist") || "Unknown Artist";
     const cover = card.getAttribute("data-cover") || card.querySelector("img")?.getAttribute("src");
     const rawSong = card.getAttribute("data-song");
-    const color = card.getAttribute("data-color") || cardColorPalette[trackId % cardColorPalette.length];
+    const color =
+      card.getAttribute("data-color") || cardColorPalette[trackId % cardColorPalette.length];
 
     songDatabase.push({
       id: trackId,
@@ -223,7 +235,7 @@ function parseSongCards() {
       audioUrl: rawSong ? encodeURI(rawSong) : encodeURI(localSongs[trackId % localSongs.length]),
       color: color,
       playingFromLabel: "PLAYING FROM ALBUM",
-      playingFromTitle: title
+      playingFromTitle: title,
     });
   });
 }
@@ -233,7 +245,7 @@ function populateMobileLibList() {
   if (!mobileLibList) return;
   mobileLibList.innerHTML = "";
   const desktopItems = document.querySelectorAll("#full-sidebar .lib-item");
-  desktopItems.forEach(item => {
+  desktopItems.forEach((item) => {
     mobileLibList.appendChild(item.cloneNode(true));
   });
 }
@@ -279,13 +291,14 @@ function renderSearchResultsInto(container, headingEl, query, onRerender) {
   if (!query) {
     if (headingEl) headingEl.innerText = "Recents";
     const recentIds = getRecentSearches();
-    matches = recentIds.map(id => songDatabase.find(t => t.id === id)).filter(Boolean);
+    matches = recentIds.map((id) => songDatabase.find((t) => t.id === id)).filter(Boolean);
   } else {
     if (headingEl) headingEl.innerText = "Results";
     const lowerQuery = query.toLowerCase();
-    matches = songDatabase.filter(track =>
-      track.title.toLowerCase().includes(lowerQuery) ||
-      track.artist.toLowerCase().includes(lowerQuery)
+    matches = songDatabase.filter(
+      (track) =>
+        track.title.toLowerCase().includes(lowerQuery) ||
+        track.artist.toLowerCase().includes(lowerQuery),
     );
   }
 
@@ -299,7 +312,7 @@ function renderSearchResultsInto(container, headingEl, query, onRerender) {
     return;
   }
 
-  matches.forEach(track => {
+  matches.forEach((track) => {
     const row = document.createElement("div");
     row.className = "mobile-search-result-item";
     row.setAttribute("data-track-id", track.id);
@@ -309,7 +322,7 @@ function renderSearchResultsInto(container, headingEl, query, onRerender) {
     row.innerHTML = `
       <img src="${track.cover}" class="mobile-search-result-img" alt="">
       <div class="mobile-search-result-text">
-        <div class="mobile-search-result-title ${isNowPlaying ? 'now-playing' : ''}">${track.title}</div>
+        <div class="mobile-search-result-title ${isNowPlaying ? "now-playing" : ""}">${track.title}</div>
         <div class="mobile-search-result-subtitle">Song • ${track.artist}</div>
       </div>
       <div class="mobile-search-result-actions">
@@ -321,7 +334,7 @@ function renderSearchResultsInto(container, headingEl, query, onRerender) {
     row.addEventListener("click", (e) => {
       const iconTarget = e.target.closest("i");
       if (iconTarget) {
-          e.stopPropagation();
+        e.stopPropagation();
         if (iconTarget.getAttribute("data-action") === "remove") {
           removeFromRecentSearches(track.id);
           onRerender();
@@ -351,7 +364,9 @@ function setupMobileLibraryView() {
   const libraryPage = document.getElementById("mobile-library-page");
   const mobileLibList = document.getElementById("mobile-lib-list");
   const quickSection = document.querySelector(".quick-section");
-  const sectionTitles = document.querySelectorAll(".content > .section-title, .content > .album-container");
+  const sectionTitles = document.querySelectorAll(
+    ".content > .section-title, .content > .album-container",
+  );
   const contentFooter = document.querySelector(".content-footer");
 
   if (!navLinks.length || !libraryPage) return;
@@ -364,13 +379,13 @@ function setupMobileLibraryView() {
     if (topbarLibrary) topbarLibrary.style.display = "flex";
 
     if (quickSection) quickSection.style.display = "none";
-    sectionTitles.forEach(el => el.style.display = "none");
+    sectionTitles.forEach((el) => (el.style.display = "none"));
     if (contentFooter) contentFooter.style.display = "none";
 
     libraryPage.style.display = "block";
 
-    document.querySelectorAll(".album-container").forEach(el => el.style.display = "none");
-    document.querySelectorAll(".section-title").forEach(el => el.style.display = "none");
+    document.querySelectorAll(".album-container").forEach((el) => (el.style.display = "none"));
+    document.querySelectorAll(".section-title").forEach((el) => (el.style.display = "none"));
   }
 
   function showHomeView() {
@@ -382,20 +397,20 @@ function setupMobileLibraryView() {
 
     libraryPage.style.display = "none";
 
-    document.querySelectorAll(".album-container").forEach(el => el.style.display = "flex");
-    document.querySelectorAll(".section-title").forEach(el => el.style.display = "flex");
+    document.querySelectorAll(".album-container").forEach((el) => (el.style.display = "flex"));
+    document.querySelectorAll(".section-title").forEach((el) => (el.style.display = "flex"));
   }
 
   // Filter pills inside the mobile library page (Playlists / Artists)
   const mobileLibPills = document.querySelectorAll(".mobile-lib-pill");
-  mobileLibPills.forEach(pill => {
+  mobileLibPills.forEach((pill) => {
     pill.addEventListener("click", () => {
-      mobileLibPills.forEach(p => p.classList.remove("active"));
+      mobileLibPills.forEach((p) => p.classList.remove("active"));
       pill.classList.add("active");
 
       const filter = pill.getAttribute("data-filter");
       const items = mobileLibList.querySelectorAll(".lib-item");
-      items.forEach(item => {
+      items.forEach((item) => {
         if (filter === "artists") {
           item.style.display = item.classList.contains("artist") ? "flex" : "none";
         } else {
@@ -416,7 +431,7 @@ function getRecentSearches() {
 
 function addToRecentSearches(trackId) {
   let recents = getRecentSearches();
-  recents = recents.filter(id => id !== trackId); // remove if already present
+  recents = recents.filter((id) => id !== trackId); // remove if already present
   recents.unshift(trackId); // add to front
   recents = recents.slice(0, 10); // cap at 10
   localStorage.setItem("recentSearchIds", JSON.stringify(recents));
@@ -424,7 +439,7 @@ function addToRecentSearches(trackId) {
 
 function removeFromRecentSearches(trackId) {
   let recents = getRecentSearches();
-  recents = recents.filter(id => id !== trackId);
+  recents = recents.filter((id) => id !== trackId);
   localStorage.setItem("recentSearchIds", JSON.stringify(recents));
 }
 
@@ -452,8 +467,8 @@ function setupMobileSearchView() {
     if (topbarSearch) topbarSearch.style.display = "none";
     if (searchPage) searchPage.style.display = "none";
     if (libraryPage) libraryPage.style.display = "none";
-    document.querySelectorAll(".album-container").forEach(el => el.style.display = "none");
-    document.querySelectorAll(".section-title").forEach(el => el.style.display = "none");
+    document.querySelectorAll(".album-container").forEach((el) => (el.style.display = "none"));
+    document.querySelectorAll(".section-title").forEach((el) => (el.style.display = "none"));
     if (quickSection) quickSection.style.display = "none";
     if (contentFooter) contentFooter.style.display = "none";
   }
@@ -463,8 +478,8 @@ function setupMobileSearchView() {
     if (topbarDefault) topbarDefault.style.display = "flex";
     if (quickSection) quickSection.style.display = "block";
     if (contentFooter) contentFooter.style.display = "block";
-    document.querySelectorAll(".album-container").forEach(el => el.style.display = "flex");
-    document.querySelectorAll(".section-title").forEach(el => el.style.display = "flex");
+    document.querySelectorAll(".album-container").forEach((el) => (el.style.display = "flex"));
+    document.querySelectorAll(".section-title").forEach((el) => (el.style.display = "flex"));
   }
 
   function showLibraryView() {
@@ -486,10 +501,10 @@ function setupMobileSearchView() {
     });
   }
 
-  navLinks.forEach(link => {
+  navLinks.forEach((link) => {
     link.addEventListener("click", (e) => {
       e.preventDefault();
-      navLinks.forEach(l => l.classList.remove("active"));
+      navLinks.forEach((l) => l.classList.remove("active"));
       link.classList.add("active");
 
       const label = link.querySelector("span")?.innerText.trim().toLowerCase();
@@ -555,7 +570,9 @@ function applyMobilePlayerColors(color) {
 let isDesktopFullscreenOpen = false;
 let desktopFullscreenBtn;
 function setupDesktopFullscreenPlayer() {
-  desktopFullscreenBtn = document.querySelector('.player-right .player-btn[data-tooltip="Full screen"], .player-right .player-btn[data-tooltip="Exit full screen"]');
+  desktopFullscreenBtn = document.querySelector(
+    '.player-right .player-btn[data-tooltip="Full screen"], .player-right .player-btn[data-tooltip="Exit full screen"]',
+  );
   const overlay = document.getElementById("desktop-fullscreen-player");
   const playerAnchor = document.getElementById("player-anchor");
   const playerFooter = document.querySelector("footer.player");
@@ -569,9 +586,10 @@ function setupDesktopFullscreenPlayer() {
   }
 
   function getFullscreenElement() {
-    return document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+    return (
+      document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement
+    );
   }
-
 
   // --- 1. BOTTOM PLAYER BUTTON ACTION (IMAGE 1 <-> IMAGE 2 <-> HOME PAGE) ---
   desktopFullscreenBtn.addEventListener("click", () => {
@@ -579,30 +597,34 @@ function setupDesktopFullscreenPlayer() {
     if (!hasActiveTrack()) return;
 
     if (!overlay.classList.contains("open")) {
-      playerSlot.appendChild(playerFooter); 
+      playerSlot.appendChild(playerFooter);
       overlay.classList.add("open");
       overlay.style.display = "block";
       updateDesktopFullscreenInfo();
 
-      const requestFS = overlay.requestFullscreen || overlay.webkitRequestFullscreen || overlay.msRequestFullscreen;
+      const requestFS =
+        overlay.requestFullscreen || overlay.webkitRequestFullscreen || overlay.msRequestFullscreen;
       if (requestFS) {
-        requestFS.call(overlay).catch(err => console.warn("Fullscreen request failed:", err));
+        requestFS.call(overlay).catch((err) => console.warn("Fullscreen request failed:", err));
       }
-    } 
-    else {
+    } else {
       const isNativeFS = getFullscreenElement() === overlay;
 
       if (!isNativeFS) {
-        const requestFS = overlay.requestFullscreen || overlay.webkitRequestFullscreen || overlay.msRequestFullscreen;
+        const requestFS =
+          overlay.requestFullscreen ||
+          overlay.webkitRequestFullscreen ||
+          overlay.msRequestFullscreen;
         if (requestFS) {
-          requestFS.call(overlay).catch(err => console.warn("Fullscreen request failed:", err));
+          requestFS.call(overlay).catch((err) => console.warn("Fullscreen request failed:", err));
         }
       } else {
-        const exitFS = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+        const exitFS =
+          document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
         if (exitFS) {
           exitFS.call(document);
         }
-        
+
         overlay.classList.remove("open");
         overlay.style.display = "none";
         if (playerAnchor && playerFooter) {
@@ -615,15 +637,19 @@ function setupDesktopFullscreenPlayer() {
   // --- 2. TOP-RIGHT WINDOW TOGGLE ACTION (IMAGE 1 <-> IMAGE 2) ---
   if (windowToggleBtn) {
     windowToggleBtn.addEventListener("click", (e) => {
-      e.stopPropagation(); 
-      
+      e.stopPropagation();
+
       if (getFullscreenElement() === overlay) {
-        const exitFS = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+        const exitFS =
+          document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
         if (exitFS) exitFS.call(document);
       } else {
-        const requestFS = overlay.requestFullscreen || overlay.webkitRequestFullscreen || overlay.msRequestFullscreen;
+        const requestFS =
+          overlay.requestFullscreen ||
+          overlay.webkitRequestFullscreen ||
+          overlay.msRequestFullscreen;
         if (requestFS) {
-          requestFS.call(overlay).catch(err => console.warn("Fullscreen request failed:", err));
+          requestFS.call(overlay).catch((err) => console.warn("Fullscreen request failed:", err));
         }
       }
     });
@@ -655,11 +681,11 @@ function setupDesktopFullscreenPlayer() {
       isDesktopFullscreenOpen = false;
 
       if (!miniPlayerOpen && !overlay.classList.contains("open")) {
-         overlay.classList.remove("open");
-         overlay.style.display = "none";
-         if (playerAnchor && playerFooter) {
-           playerAnchor.parentNode.insertBefore(playerFooter, playerAnchor.nextSibling);
-         }
+        overlay.classList.remove("open");
+        overlay.style.display = "none";
+        if (playerAnchor && playerFooter) {
+          playerAnchor.parentNode.insertBefore(playerFooter, playerAnchor.nextSibling);
+        }
       }
 
       if (windowToggleBtn) {
@@ -685,7 +711,6 @@ function setupDesktopFullscreenPlayer() {
   document.addEventListener("webkitfullscreenchange", onFullscreenChange);
   document.addEventListener("MSFullscreenChange", onFullscreenChange);
 }
-
 
 function updateDesktopFullscreenInfo() {
   const track = songDatabase[currentTrackIndex];
@@ -722,10 +747,10 @@ function loadTrack(index) {
   if (!track) return;
   localStorage.setItem("lastTrackIndex", index);
   audioPlayer.src = track.audioUrl;
-  
-const playerLeft = document.querySelector(".player-left");
+
+  const playerLeft = document.querySelector(".player-left");
   if (playerLeft) playerLeft.style.visibility = "visible";
-  
+
   // Update Playbar UI
   if (trackTitle) {
     trackTitle.innerHTML = `<span class="scroll-inner">${track.title}</span>`;
@@ -740,11 +765,12 @@ const playerLeft = document.querySelector(".player-left");
   if (currentTimeLabel) currentTimeLabel.innerText = "0:00";
   if (totalTimeLabel) totalTimeLabel.innerText = "0:00";
   updateSliderGradient(progressSlider, 0);
-  updateMobileProgressBar(0); 
+  updateMobileProgressBar(0);
   if (fsCover) fsCover.src = track.cover;
   if (fsTrackTitle) fsTrackTitle.innerText = track.title;
   if (fsTrackArtist) fsTrackArtist.innerText = track.artist;
-  if (fsPlayingFromLabel) fsPlayingFromLabel.innerText = track.playingFromLabel || "PLAYING FROM ALBUM";
+  if (fsPlayingFromLabel)
+    fsPlayingFromLabel.innerText = track.playingFromLabel || "PLAYING FROM ALBUM";
   if (fsPlayingFromTitle) fsPlayingFromTitle.innerText = track.playingFromTitle || track.title;
   if (fsProgressSlider) {
     fsProgressSlider.value = 0;
@@ -758,7 +784,7 @@ const playerLeft = document.querySelector(".player-left");
   if (desktopFullscreenContainer && track.color) {
     desktopFullscreenContainer.style.backgroundColor = track.color;
     // Overriding any existing background gradients so the flat color remains uniform
-    desktopFullscreenContainer.style.backgroundImage = "none"; 
+    desktopFullscreenContainer.style.backgroundImage = "none";
   }
   // Sync active states across cards
   syncCardActiveStates();
@@ -767,18 +793,18 @@ const playerLeft = document.querySelector(".player-left");
   updateFooterScrollState();
   updateDesktopFullscreenInfo();
   updateMiniPlayerInfo();
-
 }
 
 function playTrack() {
-  audioPlayer.play()
+  audioPlayer
+    .play()
     .then(() => {
       isPlaying = true;
       if (playPauseBtn) {
         const img = playPauseBtn.querySelector("img");
-          img.src = "./spotifyimages/pause_musicbar.png";
-          img.alt = "Pause";
-          playPauseBtn.setAttribute("data-tooltip", "Pause");
+        img.src = "./spotifyimages/pause_musicbar.png";
+        img.alt = "Pause";
+        playPauseBtn.setAttribute("data-tooltip", "Pause");
       }
       syncMobilePlayIcon();
       syncMiniPlayerPlayIcon();
@@ -790,7 +816,7 @@ function playTrack() {
       syncCardActiveStates();
       updateFooterScrollState();
     })
-    .catch(err => {
+    .catch((err) => {
       console.warn("Audio playback failed or was interrupted:", err);
     });
 }
@@ -878,7 +904,7 @@ function updateProgressBar() {
     fsProgressSlider.style.background = `linear-gradient(to right, #ffffff ${progressPercent}%, rgba(255,255,255,0.35) ${progressPercent}%)`;
   }
   if (fsCurrentTime) fsCurrentTime.innerText = formatTime(audioPlayer.currentTime);
-  updateMobileProgressBar(progressPercent); 
+  updateMobileProgressBar(progressPercent);
   if (miniPlayerProgressSlider) {
     miniPlayerProgressSlider.value = progressPercent;
     updateSliderGradient(miniPlayerProgressSlider, progressPercent);
@@ -895,7 +921,7 @@ function handleTimelineHover(e) {
   const width = rect.width;
   const ratio = Math.max(0, Math.min(1, mouseX / width));
   const hoverTimeSeconds = ratio * audioPlayer.duration;
-  
+
   if (timelineTooltip) {
     timelineTooltip.innerText = formatTime(hoverTimeSeconds);
     timelineTooltip.style.left = `${ratio * 100}%`;
@@ -1051,7 +1077,6 @@ function handleTimelinePointerDown(e) {
   window.addEventListener("pointercancel", onPointerUp);
 }
 
-
 function handleTrackEnded() {
   if (isRepeat) {
     audioPlayer.currentTime = 0;
@@ -1066,7 +1091,7 @@ function formatTime(seconds) {
   if (isNaN(seconds) || seconds === Infinity) return "0:00";
   const mins = Math.floor(seconds / 60);
   const secs = Math.floor(seconds % 60);
-  return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+  return `${mins}:${secs < 10 ? "0" : ""}${secs}`;
 }
 
 // Volume Mechanics
@@ -1085,11 +1110,11 @@ function updateVolumeUI(volume) {
 
   // Update volume icon class and tooltip
   if (volumeBtn) {
-    let iconHTML = '';
-    let tooltipText = 'Mute';
+    let iconHTML = "";
+    let tooltipText = "Mute";
     if (volume === 0) {
       iconHTML = '<i class="bi bi-volume-down-xmark"></i>';
-      tooltipText = 'Unmute';
+      tooltipText = "Unmute";
     } else if (volume < 0.3) {
       iconHTML = '<i class="bi bi-volume-off"></i>';
     } else if (volume < 0.7) {
@@ -1140,7 +1165,7 @@ function isMobileView() {
   return window.matchMedia("(max-width: 768px)").matches;
 }
 function setupCardInteractions() {
-  albumCards.forEach(card => {
+  albumCards.forEach((card) => {
     const trackId = parseInt(card.getAttribute("data-track-id"));
     const cardPlayBtn = card.querySelector(".album-play-btn");
 
@@ -1198,7 +1223,6 @@ function mixColor(hex, targetHex, weight) {
   return `rgb(${r}, ${g}, ${b})`;
 }
 
-
 // ---- Manual JS-driven gradient/color animation (avoids browser gradient-transition bugs) ----
 
 let currentAccentStops = [hexToRgb("#181818"), hexToRgb("#181818"), hexToRgb("#121212")];
@@ -1208,7 +1232,7 @@ function hexToRgb(hex) {
   return [
     parseInt(hex.slice(1, 3), 16),
     parseInt(hex.slice(3, 5), 16),
-    parseInt(hex.slice(5, 7), 16)
+    parseInt(hex.slice(5, 7), 16),
   ];
 }
 
@@ -1217,11 +1241,7 @@ function rgbToCss(rgb) {
 }
 
 function lerpColor(c1, c2, t) {
-  return [
-    c1[0] + (c2[0] - c1[0]) * t,
-    c1[1] + (c2[1] - c1[1]) * t,
-    c1[2] + (c2[2] - c1[2]) * t
-  ];
+  return [c1[0] + (c2[0] - c1[0]) * t, c1[1] + (c2[1] - c1[1]) * t, c1[2] + (c2[2] - c1[2]) * t];
 }
 
 // Writes the SAME computed colors to header + section in the SAME frame — guaranteed sync
@@ -1241,7 +1261,7 @@ function paintAccent(stopsRgb) {
 function animateAccentTo(targetStopsRgb, duration = 600) {
   if (accentAnimFrame) cancelAnimationFrame(accentAnimFrame);
 
-  const startStops = currentAccentStops.map(c => c.slice());
+  const startStops = currentAccentStops.map((c) => c.slice());
   const startTime = performance.now();
 
   function step(now) {
@@ -1249,7 +1269,7 @@ function animateAccentTo(targetStopsRgb, duration = 600) {
     const eased = 1 - Math.pow(1 - t, 3); // easeOutCubic
 
     const interpolated = startStops.map((startColor, i) =>
-      lerpColor(startColor, targetStopsRgb[i], eased)
+      lerpColor(startColor, targetStopsRgb[i], eased),
     );
 
     paintAccent(interpolated);
@@ -1257,7 +1277,7 @@ function animateAccentTo(targetStopsRgb, duration = 600) {
     if (t < 1) {
       accentAnimFrame = requestAnimationFrame(step);
     } else {
-      currentAccentStops = targetStopsRgb.map(c => c.slice());
+      currentAccentStops = targetStopsRgb.map((c) => c.slice());
       accentAnimFrame = null;
     }
   }
@@ -1279,7 +1299,7 @@ function shadeColor(hex, percent) {
 }
 // Quick Picks Card interactions
 function setupQuickCardInteractions() {
-  quickCards.forEach(card => {
+  quickCards.forEach((card) => {
     const trackId = parseInt(card.getAttribute("data-track-id"));
     const playBtn = card.querySelector(".quick-play");
 
@@ -1302,7 +1322,7 @@ function setupQuickCardInteractions() {
 
       card.appendChild(eq);
     }
-// Track hover state so CSS can decide: show button on hover, show icon otherwise
+    // Track hover state so CSS can decide: show button on hover, show icon otherwise
     card.addEventListener("mouseenter", () => {
       card.classList.add("hovering");
       const color = card.getAttribute("data-color");
@@ -1314,27 +1334,27 @@ function setupQuickCardInteractions() {
       }
     });
     card.addEventListener("mouseleave", () => {
-  card.classList.remove("hovering");
-  const defaultStops = [hexToRgb("#181818"), hexToRgb("#181818"), hexToRgb("#121212")];
-  animateAccentTo(defaultStops, 600);
-});
+      card.classList.remove("hovering");
+      const defaultStops = [hexToRgb("#181818"), hexToRgb("#181818"), hexToRgb("#121212")];
+      animateAccentTo(defaultStops, 600);
+    });
 
     const handlePlay = (e) => {
-  if (e) e.stopPropagation();
-  if (currentTrackIndex === trackId) {
-    if (isMobileView()) {
-      if (!isPlaying) playTrack();
-      openFullScreenPlayer();
-    } else {
-      togglePlay();
-    }
-  } else {
-    currentTrackIndex = trackId;
-    loadTrack(currentTrackIndex);
-    playTrack();
-    if (isMobileView()) openFullScreenPlayer();
-  }
-};
+      if (e) e.stopPropagation();
+      if (currentTrackIndex === trackId) {
+        if (isMobileView()) {
+          if (!isPlaying) playTrack();
+          openFullScreenPlayer();
+        } else {
+          togglePlay();
+        }
+      } else {
+        currentTrackIndex = trackId;
+        loadTrack(currentTrackIndex);
+        playTrack();
+        if (isMobileView()) openFullScreenPlayer();
+      }
+    };
 
     if (playBtn) playBtn.addEventListener("click", handlePlay);
     card.addEventListener("click", handlePlay);
@@ -1343,14 +1363,14 @@ function setupQuickCardInteractions() {
 
 // Active Card State Management
 function syncCardActiveStates() {
-  albumCards.forEach(card => {
+  albumCards.forEach((card) => {
     const trackId = parseInt(card.getAttribute("data-track-id"));
     const cardPlayBtn = card.querySelector(".album-play-btn");
     const titleText = card.querySelector("h3");
 
     if (trackId === currentTrackIndex && isPlaying) {
       card.classList.add("playing-card");
-      
+
       if (cardPlayBtn) {
         cardPlayBtn.style.opacity = "1";
         cardPlayBtn.style.transform = "translateY(0)";
@@ -1366,7 +1386,7 @@ function syncCardActiveStates() {
     }
   });
   // NEW: same logic for Quick Picks cards
-  quickCards.forEach(card => {
+  quickCards.forEach((card) => {
     const trackId = parseInt(card.getAttribute("data-track-id"));
     const quickPlayBtn = card.querySelector(".quick-play");
 
@@ -1398,7 +1418,7 @@ function checkAndSetupScroll(element) {
   if (!inner) return;
 
   inner.classList.remove("animating");
-  
+
   const parentWidth = element.clientWidth;
   const innerWidth = inner.offsetWidth;
 
@@ -1408,35 +1428,38 @@ function checkAndSetupScroll(element) {
   }
 }
 
-
-
 // Sidebar Pills & Interactions
 function setupLibraryInteractions() {
   if (likeBtn) {
     likeBtn.addEventListener("click", () => {
       likeBtn.classList.toggle("active");
       const isLiked = likeBtn.classList.contains("active");
-      likeBtn.innerHTML = isLiked ? '<i class="fa-solid fa-circle-check"></i>' : '<i class="fa-regular fa-plus"></i>';
-      likeBtn.setAttribute("data-tooltip", isLiked ? "Remove from Liked Songs" : "Add to Liked Songs");
+      likeBtn.innerHTML = isLiked
+        ? '<i class="fa-solid fa-circle-check"></i>'
+        : '<i class="fa-regular fa-plus"></i>';
+      likeBtn.setAttribute(
+        "data-tooltip",
+        isLiked ? "Remove from Liked Songs" : "Add to Liked Songs",
+      );
     });
   }
 
   // Library pills filtering with click-to-deactivate
   const libPills = document.querySelectorAll(".lib-pill");
-  libPills.forEach(pill => {
+  libPills.forEach((pill) => {
     pill.addEventListener("click", () => {
       const wasActive = pill.classList.contains("active");
-      
-      libPills.forEach(p => p.classList.remove("active"));
-      
+
+      libPills.forEach((p) => p.classList.remove("active"));
+
       let filterType = "all";
       if (!wasActive) {
         pill.classList.add("active");
         filterType = pill.innerText.toLowerCase();
       }
-      
+
       const items = document.querySelectorAll(".lib-item");
-      items.forEach(item => {
+      items.forEach((item) => {
         if (filterType === "playlists") {
           if (item.classList.contains("playlist") || item.classList.contains("folder")) {
             item.style.display = "flex";
@@ -1470,32 +1493,29 @@ function setupLibraryInteractions() {
   }
 }
 
-
 // Run Player on DOM Content Loaded
 document.addEventListener("DOMContentLoaded", initPlayer);
 document.addEventListener("DOMContentLoaded", () => {
-    const loader = document.getElementById("loader");
-    const mainContent = document.getElementById("main-content");
+  const loader = document.getElementById("loader");
+  const mainContent = document.getElementById("main-content");
 
-    window.addEventListener("load", () => {
-        setTimeout(() => {
-            loader.style.opacity = "0";
+  window.addEventListener("load", () => {
+    setTimeout(() => {
+      loader.style.opacity = "0";
 
-            setTimeout(() => {
-                loader.style.display = "none";
-                mainContent.style.display = "flex";
-          
-            }, 800);
-
-        }, 1000); // Loader visible for 1 seconds
-    });
+      setTimeout(() => {
+        loader.style.display = "none";
+        mainContent.style.display = "flex";
+      }, 800);
+    }, 1000); // Loader visible for 1 seconds
+  });
 });
 
 function setupTabletTooltips() {
   const wraps = document.querySelectorAll(".tablet-icon-wrap");
   const EDGE_MARGIN = 8;
 
-  wraps.forEach(wrap => {
+  wraps.forEach((wrap) => {
     const tooltip = wrap.querySelector(".tablet-tooltip");
     if (!tooltip) return;
 
@@ -1505,7 +1525,7 @@ function setupTabletTooltips() {
       const rect = wrap.getBoundingClientRect();
 
       // Render first so we can measure real height
-      tooltip.style.left = (rect.right + 14) + "px";
+      tooltip.style.left = rect.right + 14 + "px";
       tooltip.style.top = "0px";
       tooltip.style.transform = "none";
       tooltip.classList.add("visible");
@@ -1589,7 +1609,7 @@ function setupMobileMiniPlayerButton() {
   syncMobileLikeIcon();
   syncMobilePlayIcon();
 }
- function setupFullScreenPlayer() {
+function setupFullScreenPlayer() {
   fullscreenPlayerEl = document.getElementById("mobile-fullscreen-player");
   fsCollapseBtn = document.getElementById("fs-collapse-btn");
   fsPlayingFromLabel = document.getElementById("fs-playing-from-label");
@@ -1670,7 +1690,7 @@ function setupIconTooltips() {
   const wraps = document.querySelectorAll(".lib-collapse-icon, .lib-btn, .lib-btn-plus");
   const EDGE_MARGIN = 8; // minimum gap from viewport edge
 
-  wraps.forEach(wrap => {
+  wraps.forEach((wrap) => {
     const tooltip = wrap.querySelector(".icon-tooltip");
     if (!tooltip) return;
 
@@ -1706,7 +1726,7 @@ function setupSideTooltips() {
   const EDGE_MARGIN = 8;
   const GAP = 14;
 
-  wraps.forEach(wrap => {
+  wraps.forEach((wrap) => {
     const tooltip = wrap.querySelector(".side-tooltip");
     if (!tooltip) return;
 
@@ -1735,7 +1755,7 @@ function setupSideTooltips() {
 // --- WIRE UP BOTH MINIPLAYER TOGGLE BUTTONS (MAIN PLAYER & FULLSCREEN PLAYER) ---
 function setupMiniPlayerPopupBindings() {
   const mainMiniplayerBtn = document.querySelector(".player-right [data-tooltip='Miniplayer']");
-  
+
   // Target the miniplayer control button inside the desktop fullscreen control deck slot
   const fsPlayerSlot = document.getElementById("dsk-fs-player-slot");
   function executeToggle() {
@@ -1747,7 +1767,7 @@ function setupMiniPlayerPopupBindings() {
   }
   // 1. Regular bottom playbar button click
   if (mainMiniplayerBtn) {
-    mainMiniplayerBtn.addEventListener("click", function(e) {
+    mainMiniplayerBtn.addEventListener("click", function (e) {
       e.stopPropagation();
       toggleMiniPlayerState();
     });
@@ -1755,12 +1775,14 @@ function setupMiniPlayerPopupBindings() {
 
   // 2. Desktop Fullscreen view button click via delegation
   if (fsPlayerSlot) {
-    fsPlayerSlot.addEventListener("click", function(e) {
-      const btn = e.target.closest("[data-tooltip=' Open Miniplayer'], [data-tooltip='Close Miniplayer']");
+    fsPlayerSlot.addEventListener("click", function (e) {
+      const btn = e.target.closest(
+        "[data-tooltip=' Open Miniplayer'], [data-tooltip='Close Miniplayer']",
+      );
       if (btn) {
         e.stopPropagation();
         e.preventDefault();
-        
+
         // Open the miniplayer directly on top of the fullscreen layout
         toggleMiniPlayerState();
       }
@@ -1795,7 +1817,7 @@ function setupMiniPlayerPopup() {
   miniPlayerProgressSlider = document.getElementById("mini-player-progress-slider");
   miniPlayerCurrentTime = document.getElementById("mini-player-current-time");
   miniPlayerTotalTime = document.getElementById("mini-player-total-time");
-  
+
   const closeBtn = document.getElementById("mini-player-close-btn");
   const collapseBtn = document.getElementById("mini-player-collapse-btn");
   const heartBtn = document.getElementById("mini-player-heart-btn");
@@ -1805,7 +1827,7 @@ function setupMiniPlayerPopup() {
   // Helper function to manage active styling state across all control locations with sequential loader
   function toggleMiniPlayerState(forceState) {
     if (songDatabase.length === 0 || !songDatabase[currentTrackIndex]) return;
-    
+
     let isOpen;
     if (typeof forceState === "boolean") {
       isOpen = forceState;
@@ -1815,39 +1837,41 @@ function setupMiniPlayerPopup() {
 
     if (isOpen) {
       const fsOverlay = document.getElementById("desktop-fullscreen-player");
-      const nativeFsEl = document.fullscreenElement || document.webkitFullscreenElement || document.msFullscreenElement;
+      const nativeFsEl =
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.msFullscreenElement;
       if (fsOverlay && nativeFsEl === fsOverlay) {
-        const exitFS = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+        const exitFS =
+          document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
         if (exitFS) exitFS.call(document);
         fsOverlay.classList.add("open");
         fsOverlay.style.display = "block";
-         }
+      }
       miniPlayerPopup.classList.add("open");
-     
-      
+
       // Get the reference screen elements
       const flashScreen = document.getElementById("mp-flash-screen");
       const loaderScreen = document.getElementById("mp-loader-screen");
-      
+
       if (flashScreen && loaderScreen) {
         flashScreen.classList.add("active");
-        
+
         setTimeout(() => {
           flashScreen.classList.remove("active");
           loaderScreen.classList.add("active");
-          
+
           setTimeout(() => {
             loaderScreen.classList.remove("active");
             updateMiniPlayerInfo();
             syncMiniPlayerPlayIcon();
-          }, 500); 
-          
+          }, 500);
         }, 150);
       } else {
         updateMiniPlayerInfo();
         syncMiniPlayerPlayIcon();
       }
-      
+
       if (miniplayerBtn) {
         miniplayerBtn.classList.add("active");
         miniplayerBtn.setAttribute("data-tooltip", "Close miniplayer");
@@ -1857,7 +1881,6 @@ function setupMiniPlayerPopup() {
         fsMiniplayerBtn.setAttribute("data-tooltip", "Open Miniplayer");
       }
     } else {
-      
       miniPlayerPopup.classList.remove("open");
       if (miniplayerBtn) {
         miniplayerBtn.classList.remove("active");
@@ -1904,7 +1927,9 @@ function setupMiniPlayerPopup() {
     heartBtn.addEventListener("click", () => {
       if (likeBtn) likeBtn.click();
       const isLiked = likeBtn && likeBtn.classList.contains("active");
-      heartBtn.innerHTML = isLiked ? '<i class="bi bi-check-circle-fill" style="color:#1ed760;"></i>' : '<i class="bi bi-plus-circle"></i>';
+      heartBtn.innerHTML = isLiked
+        ? '<i class="bi bi-check-circle-fill" style="color:#1ed760;"></i>'
+        : '<i class="bi bi-plus-circle"></i>';
     });
   }
 
@@ -1924,16 +1949,17 @@ function updateMiniPlayerInfo() {
   if (miniPlayerCover) miniPlayerCover.src = track.cover;
   if (miniPlayerTrackTitle) miniPlayerTrackTitle.innerText = track.title;
   if (miniPlayerTrackArtist) miniPlayerTrackArtist.innerText = track.artist;
-  
+
   const miniPlayerCanvas = document.getElementById("mini-player-canvas");
   if (miniPlayerCanvas && track.color) {
-      miniPlayerCanvas.style.backgroundColor = track.color; 
+    miniPlayerCanvas.style.backgroundColor = track.color;
   }
-  
+
   if (audioPlayer.duration && !isNaN(audioPlayer.duration)) {
     const currentPct = (audioPlayer.currentTime / audioPlayer.duration) * 100;
     if (miniPlayerProgressSlider) miniPlayerProgressSlider.value = currentPct;
-    if (miniPlayerCurrentTime) miniPlayerCurrentTime.innerText = formatTime(audioPlayer.currentTime);
+    if (miniPlayerCurrentTime)
+      miniPlayerCurrentTime.innerText = formatTime(audioPlayer.currentTime);
     if (miniPlayerTotalTime) miniPlayerTotalTime.innerText = formatTime(audioPlayer.duration);
   }
 }
@@ -1945,18 +1971,12 @@ function syncMiniPlayerPlayIcon() {
     : '<i class="bi bi-play-fill"></i>';
 }
 
-
-
-
-
-
-
 // Automatically rescue the player footer from the desktop fullscreen container on mobile resize
 function handleResponsivePlayerRescue() {
-  const playerFooter = document.querySelector('.player');
-  const playerAnchor = document.querySelector('#player-anchor');
-  const desktopFullscreen = document.querySelector('#desktop-fullscreen-player');
-  
+  const playerFooter = document.querySelector(".player");
+  const playerAnchor = document.querySelector("#player-anchor");
+  const desktopFullscreen = document.querySelector("#desktop-fullscreen-player");
+
   if (!playerFooter || !playerAnchor) return;
 
   // Check if screen is mobile size
@@ -1965,21 +1985,20 @@ function handleResponsivePlayerRescue() {
     if (desktopFullscreen && desktopFullscreen.contains(playerFooter)) {
       // 1. Put the player footer back in its original home right before the closing tags
       playerAnchor.parentNode.insertBefore(playerFooter, playerAnchor.nextSibling);
-      
+
       // 2. Turn off the desktop fullscreen player visibility state
-      desktopFullscreen.classList.remove('open'); 
+      desktopFullscreen.classList.remove("open");
       // If your JS uses inline styles instead of classes, uncomment the line below:
       // desktopFullscreen.style.display = 'none';
-      
+
       console.log("Mobile view detected: Player rescued from desktop fullscreen slot.");
     }
   }
 }
 
 // Watch for screen resizing and check on initial load
-window.addEventListener('resize', handleResponsivePlayerRescue);
-window.addEventListener('DOMContentLoaded', handleResponsivePlayerRescue);
-
+window.addEventListener("resize", handleResponsivePlayerRescue);
+window.addEventListener("DOMContentLoaded", handleResponsivePlayerRescue);
 
 // =====================================================================
 // DESKTOP WINDOW DRAG & RESIZE ENGINE FOR MINIPLAYER
@@ -1991,7 +2010,7 @@ window.addEventListener('DOMContentLoaded', handleResponsivePlayerRescue);
   // Find the header section inside your miniplayer to use as the drag handle
   const header = miniPlayer.querySelector(".mp-header") || miniPlayer;
   const handles = miniPlayer.querySelectorAll(".mp-resizable-handle");
-  
+
   // Sizing Bounds
   const MIN_WIDTH = 260;
   const MAX_WIDTH = 600;
@@ -2007,12 +2026,16 @@ window.addEventListener('DOMContentLoaded', handleResponsivePlayerRescue);
   let startPlayerLeft = 0;
   let startPlayerTop = 0;
 
-  header.addEventListener("mousedown", function(e) {
+  header.addEventListener("mousedown", function (e) {
     // Do not initiate a window move if clicking buttons, sliders, or resize handles
-    if (e.target.closest("button") || e.target.closest("input") || e.target.closest(".mp-resizable-handle")) {
+    if (
+      e.target.closest("button") ||
+      e.target.closest("input") ||
+      e.target.closest(".mp-resizable-handle")
+    ) {
       return;
     }
-    
+
     e.preventDefault();
     isDraggingWindow = true;
 
@@ -2034,7 +2057,7 @@ window.addEventListener('DOMContentLoaded', handleResponsivePlayerRescue);
 
   function handleWindowMove(e) {
     if (!isDraggingWindow) return;
-    
+
     const deltaX = e.clientX - startMouseX;
     const deltaY = e.clientY - startMouseY;
 
@@ -2068,12 +2091,12 @@ window.addEventListener('DOMContentLoaded', handleResponsivePlayerRescue);
   let startWidth = 0;
   let startHeight = 0;
 
-  handles.forEach(handle => {
-    handle.addEventListener("mousedown", function(e) {
+  handles.forEach((handle) => {
+    handle.addEventListener("mousedown", function (e) {
       e.preventDefault();
       e.stopPropagation(); // Prevents drag conflict
       currentHandle = handle;
-      
+
       const rect = miniPlayer.getBoundingClientRect();
       // Enforce operational top/left parameters
       miniPlayer.style.bottom = "auto";
@@ -2100,16 +2123,24 @@ window.addEventListener('DOMContentLoaded', handleResponsivePlayerRescue);
     const deltaY = e.clientY - startMouseY;
 
     // North (Top drag) changes height and pulls the top position up/down
-    if (currentHandle.classList.contains("n") || currentHandle.classList.contains("nw") || currentHandle.classList.contains("ne")) {
+    if (
+      currentHandle.classList.contains("n") ||
+      currentHandle.classList.contains("nw") ||
+      currentHandle.classList.contains("ne")
+    ) {
       const newHeight = startHeight - deltaY;
       if (newHeight >= MIN_HEIGHT && newHeight <= MAX_HEIGHT) {
         miniPlayer.style.height = newHeight + "px";
-        miniPlayer.style.top = (startPlayerTop + deltaY) + "px";
+        miniPlayer.style.top = startPlayerTop + deltaY + "px";
       }
     }
-    
+
     // South (Bottom drag) changes height uniformly down
-    if (currentHandle.classList.contains("s") || currentHandle.classList.contains("sw") || currentHandle.classList.contains("se")) {
+    if (
+      currentHandle.classList.contains("s") ||
+      currentHandle.classList.contains("sw") ||
+      currentHandle.classList.contains("se")
+    ) {
       const newHeight = startHeight + deltaY;
       if (newHeight >= MIN_HEIGHT && newHeight <= MAX_HEIGHT) {
         miniPlayer.style.height = newHeight + "px";
@@ -2117,16 +2148,24 @@ window.addEventListener('DOMContentLoaded', handleResponsivePlayerRescue);
     }
 
     // West (Left drag) changes width and pulls left position left/right
-    if (currentHandle.classList.contains("w") || currentHandle.classList.contains("nw") || currentHandle.classList.contains("sw")) {
+    if (
+      currentHandle.classList.contains("w") ||
+      currentHandle.classList.contains("nw") ||
+      currentHandle.classList.contains("sw")
+    ) {
       const newWidth = startWidth - deltaX;
       if (newWidth >= MIN_WIDTH && newWidth <= MAX_WIDTH) {
         miniPlayer.style.width = newWidth + "px";
-        miniPlayer.style.left = (startPlayerLeft + deltaX) + "px";
+        miniPlayer.style.left = startPlayerLeft + deltaX + "px";
       }
     }
 
     // East (Right drag) changes width uniformly right
-    if (currentHandle.classList.contains("e") || currentHandle.classList.contains("ne") || currentHandle.classList.contains("se")) {
+    if (
+      currentHandle.classList.contains("e") ||
+      currentHandle.classList.contains("ne") ||
+      currentHandle.classList.contains("se")
+    ) {
       const newWidth = startWidth + deltaX;
       if (newWidth >= MIN_WIDTH && newWidth <= MAX_WIDTH) {
         miniPlayer.style.width = newWidth + "px";
@@ -2140,4 +2179,67 @@ window.addEventListener('DOMContentLoaded', handleResponsivePlayerRescue);
     document.removeEventListener("mouseup", stopWindowResize);
   }
 })();
+//Horizontal scroll button
+function setupAlbumScrollButtons() {
+  const containers = document.querySelectorAll(".album-container");
 
+  containers.forEach((container) => {
+    if (container.parentElement.classList.contains("album-row-wrapper")) return;
+
+    const wrapper = document.createElement("div");
+    wrapper.className = "album-row-wrapper";
+    container.parentNode.insertBefore(wrapper, container);
+    wrapper.appendChild(container);
+
+    const leftBtn = document.createElement("button");
+    leftBtn.type = "button";
+    leftBtn.className = "scroll-btn scroll-left";
+    leftBtn.setAttribute("aria-label", "Scroll left");
+    leftBtn.innerHTML = '<i class="bi bi-chevron-left"></i>';
+
+    const rightBtn = document.createElement("button");
+    rightBtn.type = "button";
+    rightBtn.className = "scroll-btn scroll-right";
+    rightBtn.setAttribute("aria-label", "Scroll right");
+    rightBtn.innerHTML = '<i class="bi bi-chevron-right"></i>';
+
+    wrapper.appendChild(leftBtn);
+    wrapper.appendChild(rightBtn);
+
+    function updateScrollButtonState() {
+      const maxScroll = container.scrollWidth - container.clientWidth;
+      const hasOverflow = maxScroll > 4;
+
+      leftBtn.classList.toggle("scroll-btn-hidden", !hasOverflow);
+      rightBtn.classList.toggle("scroll-btn-hidden", !hasOverflow);
+
+      leftBtn.disabled = container.scrollLeft <= 4;
+      rightBtn.disabled = container.scrollLeft >= maxScroll - 4;
+    }
+
+    leftBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      container.scrollBy({ left: -container.clientWidth * 0.9, behavior: "smooth" });
+    });
+
+    rightBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      container.scrollBy({ left: container.clientWidth * 0.9, behavior: "smooth" });
+    });
+
+    container.addEventListener("scroll", updateScrollButtonState);
+    window.addEventListener("resize", updateScrollButtonState);
+
+    // Recalculates automatically whenever the row's real size changes —
+    // e.g. the moment the loader finishes and #main-content stops being
+    // display:none, going from 0px wide to its actual width.
+    if (window.ResizeObserver) {
+      const observer = new ResizeObserver(updateScrollButtonState);
+      observer.observe(container);
+    }
+
+    updateScrollButtonState();
+  });
+}
+
+document.addEventListener("DOMContentLoaded", setupAlbumScrollButtons);
